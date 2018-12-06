@@ -9,6 +9,7 @@ var logger = require('morgan');
 var notificationTest = require('./routes/notificationtest');
 var read = require('./routes/read');
 var update = require('./routes/update');
+var login = require('./routes/login');
 
 var app = express();
 
@@ -25,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/notificationtest', notificationTest);
 app.use('/tokens', read);
 app.use('/tokens', update);
+app.use('/login', login);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
