@@ -6,7 +6,7 @@ var createError = require('http-errors');
 var db = require('../db');
 
 router.post('/', function(req, res, next) {
-    var email = req.body.email;
+    var email = req.body.email.trim();
 
     db.any(`SELECT * FROM users WHERE user_email='`+email+`'`)
     .then( user => {
