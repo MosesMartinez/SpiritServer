@@ -10,6 +10,7 @@ var notificationTest = require('./routes/notificationtest');
 var read = require('./routes/read');
 var update = require('./routes/update');
 var login = require('./routes/login');
+var signup = require('./routes/signup');
 
 var app = express();
 
@@ -27,6 +28,7 @@ app.use('/notificationtest', notificationTest);
 app.use('/tokens', read);
 app.use('/tokens', update);
 app.use('/login', login);
+app.use('/signup', signup);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
