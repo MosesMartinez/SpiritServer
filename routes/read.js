@@ -59,7 +59,9 @@ router.get('/:token', function(req, res, next) {
                 }
 
             });
-            res.json(mach);
+            machines = {};
+            machines.machines = mach;
+            res.json(machines);
 
         })
         .catch( err => {
