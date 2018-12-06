@@ -32,9 +32,7 @@ router.get('/:token/machines/:machine', function(req, res, next) {
 });
 
 router.get('/:token', function(req, res, next) {
-    var deviceToken = req.params.token;
-    var tok = jwt.sign({ foo: 'bar' }, 'shhhhh');
-    console.log(tok);
+    var deviceToken = req.params.token.replace(/\ /g, '');
 
     db.any(`SELECT user_id FROM users WHERE user_token='`+deviceToken+`'`)
     .then( user => {
