@@ -4,7 +4,7 @@ var createError = require('http-errors');
 
 var db = require('../db');
 
-router.get('/', function(req, res, next) {
+router.post('/', function(req, res, next) {
     res.json('mytokenisjuan');
 });
 
