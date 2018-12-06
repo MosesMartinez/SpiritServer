@@ -8,9 +8,14 @@ router.post('/', function(req, res, next) {
     var email = req.body.email;
     var password = req.body.password;
 
-    console.log(req);
-
-    res.json('mytokenisjuan'+email+password);
+    db.any(`SELECT * FROM users WHERE user_email='`+email+`' AND user_password='`+password+`'`)
+    .then( user => {
+        if (user.length > 0)
+            res.json(user[0].user_token);
+        else {
+            next(createError(401));
+        }
+    })
 });
 
 module.exports = router;
