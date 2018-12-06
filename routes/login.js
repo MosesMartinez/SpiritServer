@@ -5,8 +5,10 @@ var createError = require('http-errors');
 var db = require('../db');
 
 router.post('/', function(req, res, next) {
-    var email = req.params.email;
-    var password = req.params.password;
+    var email = req.body.email;
+    var password = req.body.password;
+
+    console.log(req);
 
     res.json('mytokenisjuan'+email+password);
 });
