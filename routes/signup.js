@@ -7,6 +7,8 @@ var createError = require('http-errors');
 var db = require('../db');
 
 router.get('/', function(req, res) {
+    console.log(req);
+
     res.render('signup');
 });
 
