@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var createError = require('http-errors');
-// var postdate = require('postgres-date');
+var postdate = require('postgres-date');
 
 var db = require('../db');
 
