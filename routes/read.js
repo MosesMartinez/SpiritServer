@@ -53,7 +53,7 @@ router.get('/:token', function(req, res, next) {
                            alcohol: new Array()});
 
                 for (let j = 0; j < machines[i].machine_alcohol.length; ++j) {
-                    var seconds = postdate(machines[i].machine_empty_time[j]);
+                    var seconds = postdate('2011-01-23 22:15:51Z');
                     // machines[i].machine_empty_time[j] = seconds.getSeconds();
                     console.log(seconds);
                     let alc = {type: machines[i].machine_alcohol[j],
