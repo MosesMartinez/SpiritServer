@@ -37,13 +37,15 @@ SET default_with_oids = false;
 -- Name: machines; Type: TABLE; Schema: public; Owner: -
 --
 
+DROP TABLE IF EXISTS public.machines, public.users;
+
 CREATE TABLE public.machines (
     machine_id integer NOT NULL,
     machine_user_id integer NOT NULL,
     machine_alcohol text[],
     machine_full boolean[],
     machine_container integer[],
-    machine_empty_time time(6) with time zone[]
+    machine_empty_time timestamp(6) with time zone[]
 );
 
 
@@ -117,28 +119,22 @@ ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public.u
 -- Data for Name: machines; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.machines (machine_id, machine_user_id, machine_alcohol, machine_full, machine_container, machine_empty_time) FROM stdin;
-1	1	{Vodka,Rum}	{t,t}	{1,4}	{17:17:30.87147-08,17:17:30.87147-08}
-2	1	{Vodka,Rum}	{t,t}	{1,2}	{17:17:33.111533-08,17:17:33.111533-08}
-3	1	{Vodka,Rum}	{t,t}	{3,2}	{17:17:34.471629-08,17:17:34.471629-08}
-4	1	{Vodka,Tequila}	{t,t}	{1,2}	{17:17:35.935743-08,17:17:35.935743-08}
-5	2	{Rum,Tequila}	{t,t}	{1,2}	{17:17:37.711982-08,17:17:37.711982-08}
-6	2	{Vodka,Tequila,Rum,Gin}	{f,f,t,f}	{1,3,2,4}	{17:17:47.232971-08,17:17:47.232971-08,17:17:47.232971-08,17:17:47.232971-08}
-7	2	{Tequila,Malibu,Gin,Rum,Vodka}	{t,t,f,t,f}	{1,2,3,4,5}	{17:22:46.978899-08,17:22:46.978899-08,17:22:46.978899-08,17:22:46.978899-08,17:22:46.978899-08}
-8	1	{Malibu,Amaretto,Rum,Vodka}	{t,t,f,f}	{1,2,3,4}	{17:23:16.013815-08,17:23:16.013815-08,17:23:16.013815-08,17:23:16.013815-08}
-\.
+INSERT INTO public.machines (machine_id, machine_user_id, machine_alcohol, machine_full, machine_container, machine_empty_time) VALUES (1, 1, '{Vodka,Rum}', '{t,t}', '{1,4}', '{"2018-12-13 15:15:26.84075-08","2018-12-13 15:15:26.84075-08"}');
+INSERT INTO public.machines (machine_id, machine_user_id, machine_alcohol, machine_full, machine_container, machine_empty_time) VALUES (2, 1, '{Vodka,Rum}', '{t,t}', '{1,2}', '{"2018-12-13 15:15:33.317246-08","2018-12-13 15:15:33.317246-08"}');
+INSERT INTO public.machines (machine_id, machine_user_id, machine_alcohol, machine_full, machine_container, machine_empty_time) VALUES (3, 1, '{Vodka,Rum}', '{t,t}', '{3,2}', '{"2018-12-13 15:15:36.722915-08","2018-12-13 15:15:36.722915-08"}');
+INSERT INTO public.machines (machine_id, machine_user_id, machine_alcohol, machine_full, machine_container, machine_empty_time) VALUES (4, 1, '{Vodka,Tequila}', '{t,t}', '{1,2}', '{"2018-12-13 15:15:46.785966-08","2018-12-13 15:15:46.785966-08"}');
+INSERT INTO public.machines (machine_id, machine_user_id, machine_alcohol, machine_full, machine_container, machine_empty_time) VALUES (5, 2, '{Rum,Tequila}', '{t,t}', '{1,2}', '{"2018-12-13 15:15:49.459083-08","2018-12-13 15:15:49.459083-08"}');
+INSERT INTO public.machines (machine_id, machine_user_id, machine_alcohol, machine_full, machine_container, machine_empty_time) VALUES (6, 2, '{Vodka,Tequila,Rum,Gin}', '{f,f,t,f}', '{1,3,2,4}', '{"2018-12-13 15:16:31.468391-08","2018-12-13 15:16:31.468391-08","2018-12-13 15:16:31.468391-08","2018-12-13 15:16:31.468391-08"}');
+INSERT INTO public.machines (machine_id, machine_user_id, machine_alcohol, machine_full, machine_container, machine_empty_time) VALUES (8, 1, '{Malibu,Amaretto,Rum,Vodka}', '{t,t,f,f}', '{1,2,3,4}', '{"2018-12-13 15:16:34.575981-08","2018-12-13 15:16:34.575981-08","2018-12-13 15:16:34.575981-08","2018-12-13 15:16:34.575981-08"}');
+INSERT INTO public.machines (machine_id, machine_user_id, machine_alcohol, machine_full, machine_container, machine_empty_time) VALUES (7, 2, '{Tequila,Malibu,Gin,Rum,Vodka}', '{t,t,f,t,f}', '{1,2,3,4,5}', '{"2018-12-13 15:16:47.238646-08","2018-12-13 15:16:47.238646-08","2018-12-13 15:16:47.238646-08","2018-12-13 15:16:47.238646-08","2018-12-13 15:16:47.238646-08"}');
 
 
 --
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.users (user_id, user_token, user_password, user_email) FROM stdin;
-3	7e728ccac08fbeb16c3ea086047ee16996889894	sha1$ce90cd1c$1$1c6da2a471e37251b2799902f574347f85b486af	newmail@mail.com
-4	a58b46ff0f129a55b7efbc77df79e48057bf89c7	sha1$8e4c23d0$1$48ae1be9e0891f1dfa6d4dca2629fd9c14cbfca5	newmail@mail.com
-1	e7234b54fb42fc899bdf7397b3579eebe9dfcf1d	sha1$fd6d7c81$1$e071a1186e2fe785049e22c8f81c2bffd1457203	mail@mail.com
-2	4dd1b69213836e6eb537542652e4eeaf713719ff	sha1$5837658b$1$10b1b0cf852b52bdd92692485624f4878f4ab489	email@mail.com
-\.
+INSERT INTO public.users (user_id, user_token, user_password, user_email) VALUES (1, 'e7234b54fb42fc899bdf7397b3579eebe9dfcf1d', 'sha1$fd6d7c81$1$e071a1186e2fe785049e22c8f81c2bffd1457203', 'mail@mail.com');
+INSERT INTO public.users (user_id, user_token, user_password, user_email) VALUES (2, '4dd1b69213836e6eb537542652e4eeaf713719ff', 'sha1$5837658b$1$10b1b0cf852b52bdd92692485624f4878f4ab489', 'email@mail.com');
 
 
 --
@@ -169,6 +165,14 @@ ALTER TABLE ONLY public.machines
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (user_id);
+
+
+--
+-- Name: users users_user_email_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_user_email_key UNIQUE (user_email);
 
 
 --
