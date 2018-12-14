@@ -22,6 +22,8 @@ router.get('/', function(req, res, next) {
         },
         production: false
     };
+
+    console.log(options);
     
     var apnProvider = new apn.Provider(options);
 
@@ -34,11 +36,12 @@ router.get('/', function(req, res, next) {
     note.body = "Vodka is low";
     note.title = "Spirit Machine"
     note.payload = {'messageFrom': 'John Appleseed'};
-    note.topic = "com.spiritmachine.SpiritMachineTechnician";
+    note.topic = "com.spiritmachine.Technician";
 
     console.log(note);
 
-    apnProvider.send(note, deviceToken).then( (result) => {
+    apnProvider.send(note, deviceToken)
+    .then( (result) => {
         console.log(result);
     })
     .catch( err => {
