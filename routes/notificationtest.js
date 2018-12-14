@@ -36,6 +36,8 @@ router.get('/', function(req, res, next) {
     note.payload = {'messageFrom': 'John Appleseed'};
     note.topic = "com.spiritmachine.SpiritMachineTechnician";
 
+    console.log(note);
+
     apnProvider.send(note, deviceToken).then( (result) => {
         console.log(result);
     })
