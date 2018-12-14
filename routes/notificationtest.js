@@ -38,7 +38,6 @@ router.get('/', function(req, res, next) {
 
     apnProvider.send(note, deviceToken).then( (result) => {
         console.log(result);
-        res.json(note);
     });
 });
 
