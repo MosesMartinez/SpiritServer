@@ -5,8 +5,8 @@ var apn = require('apn');
 var db = require('../db');
 
 
-router.get('/:token', function(req, res, next) {
-    var deviceToken = req.params.token;
+router.get('/', function(req, res, next) {
+    // var deviceToken = req.params.token;
 
     // db.any(`SELECT * FROM users`)
     // .then( user => {
@@ -16,7 +16,7 @@ router.get('/:token', function(req, res, next) {
 
     var options = {
         token: {
-            key: "keys/AuthKey_494J327684.p8",
+            key: "/keys/AuthKey_494J327684.p8",
             keyId: "494J327684",
             teamId: "2X829ERV72"
         },
@@ -36,10 +36,9 @@ router.get('/:token', function(req, res, next) {
     note.payload = {'messageFrom': 'John Appleseed'};
     note.topic = "com.spiritmachine.SpiritMachineTechnician";
 
-    res.json(note);
-
     apnProvider.send(note, deviceToken).then( (result) => {
         console.log(result);
+        res.json(note);
     });
 });
 
