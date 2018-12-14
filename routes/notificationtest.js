@@ -6,13 +6,6 @@ var db = require('../db');
 
 
 router.get('/', function(req, res, next) {
-    // var deviceToken = req.params.token;
-
-    // db.any(`SELECT * FROM users`)
-    // .then( user => {
-    //     res.send(user);
-    // })
-
 
     var options = {
         token: {
@@ -23,13 +16,15 @@ router.get('/', function(req, res, next) {
         production: false
     };
 
-    console.log(options);
+    console.log("Starting here");
     
     var apnProvider = new apn.Provider(options);
 
-    let deviceToken = "90A6B007CF19B00A63A8820B2582632240B1341B9178F53870C4184BB680E2D2"
+    let deviceToken = "90A6B007CF19B00A63A8820B2582632240B1341B9178F53870C4184BB680E2D2";
 
     var note = new apn.Notification();
+
+    console.log("Here");
     
     note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
     note.badge = 3;
@@ -38,14 +33,11 @@ router.get('/', function(req, res, next) {
     note.payload = {'messageFrom': 'John Appleseed'};
     note.topic = "com.spiritmachine.Technician";
 
-    console.log(note);
+    console.log("Now here");
 
     apnProvider.send(note, deviceToken)
     .then( (result) => {
         console.log(result);
-    })
-    .catch( err => {
-        console.log(err);
     });
 });
 
