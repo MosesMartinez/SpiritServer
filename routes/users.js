@@ -8,7 +8,10 @@ router.get('/:token', function(req, res, next) {
 
   db.any(`SELECT user_id, user_email, user_created FROM users WHERE user_token='`+deviceToken+`'`)
   .then( user => {
-      res.json(user[]);
+    if (user.length > 0)
+      res.json(user[0]);
+    else
+      res.json([]);
   })
   .catch( err => {
       next(createError(404));
