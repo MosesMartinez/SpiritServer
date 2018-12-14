@@ -14,7 +14,8 @@ router.get('/:token', function(req, res, next) {
       res.json([]);
   })
   .catch( err => {
-      next(createError(404));
+    console.log(err);
+    next(createError(404));
   });
 });
 module.exports = router;
