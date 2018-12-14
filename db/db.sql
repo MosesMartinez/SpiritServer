@@ -36,7 +36,6 @@ SET default_with_oids = false;
 --
 -- Name: machines; Type: TABLE; Schema: public; Owner: -
 --
-
 DROP TABLE IF EXISTS public.machines, public.users;
 
 CREATE TABLE public.machines (
@@ -77,7 +76,8 @@ CREATE TABLE public.users (
     user_id integer NOT NULL,
     user_token text NOT NULL,
     user_password text NOT NULL,
-    user_email text NOT NULL
+    user_email text NOT NULL,
+    user_created timestamp(6) with time zone DEFAULT now()
 );
 
 
@@ -133,8 +133,8 @@ INSERT INTO public.machines (machine_id, machine_user_id, machine_alcohol, machi
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.users (user_id, user_token, user_password, user_email) VALUES (1, 'e7234b54fb42fc899bdf7397b3579eebe9dfcf1d', 'sha1$fd6d7c81$1$e071a1186e2fe785049e22c8f81c2bffd1457203', 'mail@mail.com');
-INSERT INTO public.users (user_id, user_token, user_password, user_email) VALUES (2, '4dd1b69213836e6eb537542652e4eeaf713719ff', 'sha1$5837658b$1$10b1b0cf852b52bdd92692485624f4878f4ab489', 'email@mail.com');
+INSERT INTO public.users (user_id, user_token, user_password, user_email, user_created) VALUES (1, 'e7234b54fb42fc899bdf7397b3579eebe9dfcf1d', 'sha1$fd6d7c81$1$e071a1186e2fe785049e22c8f81c2bffd1457203', 'mail@mail.com', '2018-12-13 16:09:20.175893-08');
+INSERT INTO public.users (user_id, user_token, user_password, user_email, user_created) VALUES (2, '4dd1b69213836e6eb537542652e4eeaf713719ff', 'sha1$5837658b$1$10b1b0cf852b52bdd92692485624f4878f4ab489', 'email@mail.com', '2018-12-13 16:09:20.175893-08');
 
 
 --
