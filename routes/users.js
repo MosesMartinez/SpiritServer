@@ -11,6 +11,7 @@ router.get('/:token', function(req, res, next) {
     if (user.length > 0) {
       var userJSON = {};
       userJSON.users = user[0];
+      userJSON.users.user_created = userJSON.users.user_created.getTime()/1000
       res.json(userJSON);
     }
     else
