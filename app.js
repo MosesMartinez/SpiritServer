@@ -10,6 +10,7 @@ var notificationTest = require('./routes/notificationtest');
 var read = require('./routes/read');
 var update = require('./routes/update');
 var users = require('./routes/users');
+var alcohol = require('./routes/alcohol');
 var login = require('./routes/login');
 var signup = require('./routes/signup');
 
@@ -29,6 +30,7 @@ app.use('/notificationtest', notificationTest);
 app.use('/tokens', read);
 app.use('/tokens', update);
 app.use('/users', users);
+app.use('/', alcohol);
 app.use('/login', login);
 app.use('/signup', signup);
 
