@@ -13,6 +13,7 @@ var users = require('./routes/users');
 var alcohol = require('./routes/alcohol');
 var login = require('./routes/login');
 var signup = require('./routes/signup');
+var wallet = require('./routes/wallet');
 
 var app = express();
 
@@ -33,14 +34,15 @@ app.use('/users', users);
 app.use('/', alcohol);
 app.use('/login', login);
 app.use('/signup', signup);
+app.use('/wallet', wallet)
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.status + " " + err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
