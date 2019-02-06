@@ -5,6 +5,8 @@ var db = require('../db');
 router.post('/:nfc', function (req, res, next) {
     var nfcData = req.params.nfc;
 
+    console.log('Encrypted: ' + nfcData);
+
     // Decrypt encrypted NFC data
     var encryptedBytes = aesjs.utils.hex.toBytes(nfcData);
 
