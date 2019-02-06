@@ -5,10 +5,16 @@ var db = require('../db');
 router.post('/:nfc', function (req, res, next) {
     var nfcData = req.params.nfc;
 
-    res.json({
-        id: 5,
-        money: 512.34
-    })
+    db.any(`SELECT user_money FROM users WHERE user_id=` + nfcData + `;`)
+        .then(money => {
+            console.log(money);
+            res.json({
+                id: 5,
+                money: 512.34
+            })
+        });
+
+
 });
 
 module.exports = router;
