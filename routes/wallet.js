@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var db = require('../db');
 var aesjs = require('aes-js');
+var hex64 = require('hex64');
 
 router.post('/:nfc', function (req, res, next) {
     var nfcData = req.params.nfc;
@@ -9,8 +10,11 @@ router.post('/:nfc', function (req, res, next) {
 
     console.log('Encrypted: ' + nfcData);
 
+    // Convert Base64 to Hex
+    var encryptedHex = hex64.decode(nfcData);
+
     // Decrypt encrypted NFC data
-    var encryptedBytes = aesjs.utils.hex.toBytes(nfcData);
+    var encryptedBytes = aesjs.utils.hex.toBytes(encryptedHex);
 
     // The counter mode of operation maintains internal state, so to
     // decrypt a new instance must be instantiated.

@@ -55,7 +55,7 @@ router.post('/:nfc', function (req, res, next) {
             //var decryptedJSON = JSON.parse(decryptedText);
             console.log('Decrypted is: ' + decryptedText);
 
-            res.send(encryptedHex);
+            res.send(encryptedBase64);
         });
 
 
