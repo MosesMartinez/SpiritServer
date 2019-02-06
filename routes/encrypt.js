@@ -29,12 +29,15 @@ router.post('/:nfc', function (req, res, next) {
             // The counter is optional, and if omitted will begin at 1
             var aesCtr = new aesjs.ModeOfOperation.ctr(key);
             var encryptedBytes = aesCtr.encrypt(jsonBytes);
+            console.log('JSON bytes: ' + jsonBytes);
 
             // To print or store the binary data, you may convert it to hex
             var encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes);
-            console.log(encryptedHex);
+            var encryptedBase64 = Buffer.from(encryptedHex).toString('base64');
+            console.log(encryptedBase64);
 
-            var encryptedBytes = aesjs.utils.hex.toBytes(encryptedHex);
+            var newEncryptedHex = Buffer.from(encryptedBase64, 'base64').toString('ascii');
+            var encryptedBytes = aesjs.utils.hex.toBytes(newEncryptedHex);
 
             // The counter mode of operation maintains internal state, so to
             // decrypt a new instance must be instantiated.
