@@ -34,7 +34,7 @@ router.post('/:nfc', function (req, res, next) {
             var encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes);
             console.log(encryptedHex);
 
-            var encryptedBytes = aesjs.utils.hex.toBytes(nfcData);
+            var encryptedBytes = aesjs.utils.hex.toBytes(encryptedHex);
 
             // The counter mode of operation maintains internal state, so to
             // decrypt a new instance must be instantiated.
@@ -45,7 +45,7 @@ router.post('/:nfc', function (req, res, next) {
             var decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes);
             console.log(decryptedText);
 
-            var decryptedJSON = JSON.parse(decryptedText);
+            //var decryptedJSON = JSON.parse(decryptedText);
             console.log('Decrypted is: ' + decryptedText);
 
             res.send(encryptedHex);
