@@ -29,7 +29,7 @@ router.post('/:nfc', function (req, res, next) {
     var id = decryptedJSON.id;
     var email = decryptedJSON.email;
 
-    db.any(`SELECT user_money FROM users WHERE user_id=` + id + ` AND user_email=` + email + `;`)
+    db.any(`SELECT user_money FROM users WHERE user_id=` + id + ` AND user_email='` + email + `';`)
         .then(money => {
             console.log(money);
             res.json({
