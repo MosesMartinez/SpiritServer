@@ -9,8 +9,8 @@ router.post('/:nfc', function (req, res, next) {
         .then(money => {
             console.log(money);
             res.json({
-                id: 5,
-                money: 512.34
+                id: nfcData,
+                money: money[0].user_money
             })
         });
 
