@@ -33,10 +33,13 @@ router.post('/:nfc', function (req, res, next) {
 
             // To print or store the binary data, you may convert it to hex
             var encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes);
-            var encryptedBase64 = Buffer.from(encryptedHex).toString('base64');
-            console.log(encryptedBase64);
+            console.log('Hex: ' + encryptedHex);
+            var encryptedBase64 = hex64.encode(encryptedHex);
+            console.log('Base64: ' + encryptedBase64);
 
-            var newEncryptedHex = Buffer.from(encryptedBase64, 'base64').toString('ascii');
+            var newEncryptedHex = hex64.decode(encryptedBase64);
+            console.log('New Hex: ' + newEncryptedHex);
+
             var encryptedBytes = aesjs.utils.hex.toBytes(newEncryptedHex);
 
             // The counter mode of operation maintains internal state, so to
