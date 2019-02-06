@@ -5,7 +5,23 @@ var db = require('../db');
 router.post('/:nfc', function (req, res, next) {
     var nfcData = req.params.nfc;
 
-    db.any(`SELECT user_money FROM users WHERE user_id=` + nfcData + `;`)
+    // Decrypt encrypted NFC data
+    var encryptedBytes = aesjs.utils.hex.toBytes(nfcData);
+
+    // The counter mode of operation maintains internal state, so to
+    // decrypt a new instance must be instantiated.
+    var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
+    var decryptedBytes = aesCtr.decrypt(encryptedBytes);
+
+    // Convert our bytes back into text
+    var decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes);
+    console.log(decryptedText);
+
+    var decryptedJSON = JSON.parse(decryptedText);
+    var id = decryptedJSON.id;
+    var email = decryptedJSON.email;
+
+    db.any(`SELECT user_money FROM users WHERE user_id=` + id + ` AND user_email=;` + email + `;`)
         .then(money => {
             console.log(money);
             res.json({
