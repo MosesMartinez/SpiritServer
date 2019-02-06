@@ -11,10 +11,10 @@ router.post('/:nfc', function (req, res, next) {
     console.log('Encrypted: ' + nfcData);
 
     // Convert Base64 to Hex
-    var encryptedHex = hex64.decode(nfcData);
+    //var encryptedHex = hex64.decode(nfcData);
 
     // Decrypt encrypted NFC data
-    var encryptedBytes = aesjs.utils.hex.toBytes(encryptedHex);
+    var encryptedBytes = aesjs.utils.hex.toBytes(nfcData);
 
     // The counter mode of operation maintains internal state, so to
     // decrypt a new instance must be instantiated.
