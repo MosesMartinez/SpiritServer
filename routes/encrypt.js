@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var db = require('../db');
 var aesjs = require('aes-js');
+var hex64 = require('hex64');
 
 router.post('/:nfc', function (req, res, next) {
     var nfcID = req.params.nfc;
