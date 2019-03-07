@@ -39,8 +39,30 @@ router.get('/', function (req, res, next) {
             res.json(machine[0]);
         })
         .catch(err => {
-            console.log(err);
-            next(createError(404));
+            const queryStr2 =
+                `INSERT INTO machines SET machine_id = ` + machine + `, `
+                + `machine_user_id = ` + user + `, `
+                + `machine_alcohol = ARRAY['`
+                + alcohols[0] + `','`
+                + alcohols[1] + `','`
+                + alcohols[2] + `','`
+                + alcohols[3] + `'], `
+                + `machine_mixer = ARRAY['`
+                + mixers[0] + `','`
+                + mixers[1] + `','`
+                + mixers[2] + `','`
+                + mixers[3] + `'], `
+                + `machine_empty = ARRAY[false, false, false, false], `
+                + `machine_empty_time = ARRAY[now(), now(), now(), now()]; `
+                + `SELECT * FROM machines WHERE machine_id = ` + machine + `;`;
+
+            db.any(queryStr2)
+                .then(mach => {
+                    res.json(mach[0]);
+                })
+                .catch(err => {
+                    res.send("Nope");
+                })
         });
 });
 module.exports = router;
