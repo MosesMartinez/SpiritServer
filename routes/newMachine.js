@@ -28,6 +28,8 @@ router.get('/', function (req, res, next) {
         + mixers[3]
         + `']; SELECT * FROM machines WHERE machine_id = ` + machine + `;`;
 
+    console.log(queryStr);
+
     db.any(queryStr)
         .then(machine => {
             res.json(machine[0]);
