@@ -21,6 +21,8 @@ router.get('/', function (req, res, next) {
 
     let cocktailArray = Array.from(cocktailSet);
 
+    console.log(cocktailArray);
+
     res.send(cocktailArray);
 });
 
