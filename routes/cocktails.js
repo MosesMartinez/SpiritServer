@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var cocktails = require('../js/liquors');
+var cocktails = require('../js/liquors').liquors;
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
