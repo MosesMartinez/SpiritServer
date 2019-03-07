@@ -40,7 +40,8 @@ router.get('/', function (req, res, next) {
         })
         .catch(err => {
             const queryStr2 =
-                `INSERT INTO machines SET machine_id = ` + machine + `, `
+                `INSERT INTO machines VALUES `
+                + `machine_id = ` + machine + `, `
                 + `machine_user_id = ` + user + `, `
                 + `machine_alcohol = ARRAY['`
                 + alcohols[0] + `','`
