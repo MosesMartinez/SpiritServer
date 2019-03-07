@@ -211,3 +211,5 @@ const liquors =
             image: null,
         },
     ]
+
+module.exports.liquors = liquors;
