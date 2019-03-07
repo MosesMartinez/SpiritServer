@@ -16,6 +16,7 @@ var signup = require('./routes/signup');
 var encrypt = require('./routes/encrypt');
 var wallet = require('./routes/wallet');
 var newMachine = require('./routes/newMachine');
+var cocktails = require('./routes/cocktails');
 
 var app = express();
 
@@ -39,6 +40,7 @@ app.use('/signup', signup);
 app.use('/encrypt', encrypt);
 app.use('/wallet', wallet);
 app.use('/newMachine', newMachine);
+app.use('/cocktails', cocktails);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
