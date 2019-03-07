@@ -1,0 +1,40 @@
+var express = require('express');
+var router = express.Router();
+
+var db = require('../db');
+
+router.get('/', function (req, res, next) {
+    const user = req.query.user;
+    const machine = req.query.machine;
+    let alcohols = req.query.alcohols.split(', ');
+    let mixers = req.query.mixers.split(', ');
+    alcohols[0] = alcohols[0].slice(1, alcohols[0].length);
+    alcohols[1] = alcohols[1].slice(0, alcohols[0].length - 1);
+    mixers[0] = mixers[0].slice(1, mixers[0].length);
+    mixers[1] = mixers[1].slice(0, mixers[0].length - 1);
+
+    const queryStr =
+        `UPDATE machines SET machine_id = ` + machine
+        + `, machine_user_id = ` + user
+        + `, machine_alcohol = ARRAY['`
+        + alcohols[0] + `','`
+        + alcohols[1] + `','`
+        + alcohols[2] + `','`
+        + alcohols[3]
+        + `'], machine_mixer = ARRAY['`
+        + mixers[0] + `','`
+        + mixers[1] + `','`
+        + mixers[2] + `','`
+        + mixers[3]
+        + `']; SELECT * FROM machines WHERE machine_id = ` + machine + `;`;
+
+    db.any(queryStr)
+        .then(machine => {
+            res.json(machine[0]);
+        })
+        .catch(err => {
+            console.log(err);
+            next(createError(404));
+        });
+});
+module.exports = router;
