@@ -8,6 +8,10 @@ router.get('/', function (req, res, next) {
     const machine = req.query.machine;
     let alcohols = req.query.alcohols.split(', ');
     let mixers = req.query.mixers.split(', ');
+
+    console.log(alcohols);
+    console.log(mixers);
+
     alcohols[0] = alcohols[0].slice(1, alcohols[0].length);
     alcohols[1] = alcohols[1].slice(0, alcohols[0].length - 1);
     mixers[0] = mixers[0].slice(1, mixers[0].length);
