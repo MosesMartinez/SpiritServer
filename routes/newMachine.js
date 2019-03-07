@@ -40,21 +40,21 @@ router.get('/', function (req, res, next) {
         })
         .catch(err => {
             const queryStr2 =
-                `INSERT INTO machines VALUES `
-                + `machine_id = ` + machine + `, `
-                + `machine_user_id = ` + user + `, `
-                + `machine_alcohol = ARRAY['`
+                `INSERT INTO machines (machine_id, machine_user_id, machine_alcohol, machine_mixer, machine_empty, machine_empty_time) `
+                + `VALUES (` + machine + `, `
+                + `` + user + `, `
+                + `ARRAY['`
                 + alcohols[0] + `','`
                 + alcohols[1] + `','`
                 + alcohols[2] + `','`
                 + alcohols[3] + `'], `
-                + `machine_mixer = ARRAY['`
+                + `ARRAY['`
                 + mixers[0] + `','`
                 + mixers[1] + `','`
                 + mixers[2] + `','`
                 + mixers[3] + `'], `
-                + `machine_empty = ARRAY[false, false, false, false], `
-                + `machine_empty_time = ARRAY[now(), now(), now(), now()]; `
+                + `ARRAY[false, false, false, false], `
+                + `ARRAY[now(), now(), now(), now()]); `
                 + `SELECT * FROM machines WHERE machine_id = ` + machine + `;`;
 
             db.any(queryStr2)
