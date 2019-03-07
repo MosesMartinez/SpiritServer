@@ -6,8 +6,8 @@ var db = require('../db');
 router.get('/', function (req, res, next) {
     const user = req.query.user;
     const machine = req.query.machine;
-    let alcohols = req.query.alcohols.split(', ');
-    let mixers = req.query.mixers.split(', ');
+    let alcohols = req.query.alcohols.split(',');
+    let mixers = req.query.mixers.split(',');
 
     console.log(alcohols);
     console.log(mixers);
