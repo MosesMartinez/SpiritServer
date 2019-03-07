@@ -30,7 +30,9 @@ router.get('/', function (req, res, next) {
         + mixers[1] + `','`
         + mixers[2] + `','`
         + mixers[3]
-        + `']; SELECT * FROM machines WHERE machine_id = ` + machine + `;`;
+        + `'] WHERE machine_id = `
+        + machine + `; `
+        + `SELECT * FROM machines WHERE machine_id = ` + machine + `;`;
 
     console.log(queryStr);
 
