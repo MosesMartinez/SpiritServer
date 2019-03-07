@@ -7,12 +7,16 @@ router.get('/', function (req, res, next) {
     let alcohols = req.query.alcohols.split(',');
     let mixers = req.query.mixers.split(',');
 
+    console.log(alcohols);
+    console.log(mixers);
+
     let cocktailSet = new Set();
 
     alcohols.forEach(alc => {
         mixers.forEach(mix => {
             cocktails.forEach(coc => {
                 if (coc.alcohols.includes(alc) && coc.mixers.includes(mix)) {
+                    console.log("Adding " + coc.name);
                     cocktailSet.add(coc);
                 }
             });
