@@ -18,6 +18,8 @@ router.get('/', function (req, res, next) {
             console.log("In second loop: " + mix);
             cocktails.forEach(coc => {
                 console.log("In third loop: " + coc);
+                console.log(coc.alcohols.includes(alc));
+                console.log(coc.mixers.includes(mix));
                 if (coc.alcohols.includes(alc) && coc.mixers.includes(mix)) {
                     console.log("Adding " + coc.name);
                     cocktailSet.add(coc);
