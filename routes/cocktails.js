@@ -9,6 +9,7 @@ router.get('/', function (req, res, next) {
 
     console.log(alcohols);
     console.log(mixers);
+    console.log(cocktails);
 
     let cocktailSet = new Set();
 
