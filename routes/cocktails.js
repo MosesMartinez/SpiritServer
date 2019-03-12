@@ -34,29 +34,28 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/:machine/', function (req, res, next) {
-    // let machine = req.params.machine;
+    let machine = req.params.machine;
 
     // Make sure no SQL injection
-    // if (!Number.isInteger(parseInt(machine))) {
-    //     res.send("Not a valid input");
-    //     return;
-    // }
+    if (!Number.isInteger(parseInt(machine))) {
+        res.send("Not a valid input");
+        return;
+    }
 
-    // db.any(`SELECT machine_alcohol, machine_mixer FROM machines WHERE machine_id = ` + machine + `;`)
-    db.any(`SELECT machine_alcohol, machine_mixer FROM machines WHERE machine_id = 1;`)
+    db.any(`SELECT machine_alcohol, machine_mixer FROM machines WHERE machine_id = ` + machine + `;`)
         .then(result => {
-            // alcohol = result[0].machine_alcohol;
-            // mixer = result[0].machine_alcohol;
+            alcohol = result[0].machine_alcohol;
+            mixer = result[0].machine_alcohol;
 
-            // console.log("Alcohol: " + alcohol);
-            // console.log("Mixer: " + mixer);
+            console.log("Alcohol: " + alcohol);
+            console.log("Mixer: " + mixer);
 
-            // res.send({
-            //     alcohol: alcohol,
-            //     mixer: mixer,
-            // })
+            res.send({
+                alcohol: alcohol,
+                mixer: mixer,
+            })
 
-            res.send(result);
+            // res.send(result);
         })
         .catch(err => {
             console.log(err);
