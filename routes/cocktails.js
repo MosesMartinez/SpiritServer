@@ -50,54 +50,55 @@ router.get('/:machine/', function (req, res, next) {
             console.log("Alcohol: " + alcohols);
             console.log("Mixer: " + mixers);
 
-            let cocktailSet = new Set();
+            let cocktailObj = []
+
+            // [
+            //     {
+            //         alcohol: null,
+            //         cocktails: [
+            //             {
+            //                 name: null,
+            //                 price: null,
+            //                 image: null,
+            //             },
+            //         ]
+            //     }
+            // ]
 
             alcohols.forEach(alc => {
+                cocktailObj.push(
+                    {
+                        alcohol: alc,
+                        cocktails: [],
+                    }
+                );
+            });
+
+            cocktailObj.forEach(cocObj => {
                 mixers.forEach(mix => {
                     cocktails.forEach(coc => {
-                        console.log(coc.alcohols.includes(alc));
-                        console.log(coc.mixers.includes(mix));
-                        if (coc.alcohols.includes(alc) && coc.mixers.includes(mix)) {
-                            cocktailSet.add(coc);
+                        if (coc.alcohols.includes(cocObj.alcohol) && coc.mixers.includes(mix)) {
+                            let curCocktail =
+                            {
+                                name: coc.name,
+                                price: 5.00,
+                                image: coc.image,
+                            };
+                            cocObj.cocktails.push(curCocktail);
                         }
                     });
                 });
             });
 
-            let cocktailArray = Array.from(cocktailSet);
+            console.log(cocktailObj);
 
-            console.log(cocktailArray);
-
-            res.send(cocktailArray);
+            res.send(cocktailObj);
 
         })
         .catch(err => {
             console.log(err);
         });
 
-    // let cocktailSet = new Set();
-
-    // alcohols.forEach(alc => {
-    //     console.log("In first loop: " + alc);
-    //     mixers.forEach(mix => {
-    //         console.log("In second loop: " + mix);
-    //         cocktails.forEach(coc => {
-    //             console.log("In third loop: " + coc);
-    //             console.log(coc.alcohols.includes(alc));
-    //             console.log(coc.mixers.includes(mix));
-    //             if (coc.alcohols.includes(alc) && coc.mixers.includes(mix)) {
-    //                 console.log("Adding " + coc.name);
-    //                 cocktailSet.add(coc);
-    //             }
-    //         });
-    //     });
-    // });
-
-    // let cocktailArray = Array.from(cocktailSet);
-
-    // console.log(cocktailArray);
-
-    // res.send(cocktailArray);
 });
 
 module.exports = router;
