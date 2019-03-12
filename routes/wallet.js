@@ -15,15 +15,18 @@ router.post('/:nfc', function (req, res, next) {
 
     // Decrypt encrypted NFC data
     var encryptedBytes = aesjs.utils.hex.toBytes(nfcData);
+    console.log("Became bytes");
 
     // The counter mode of operation maintains internal state, so to
     // decrypt a new instance must be instantiated.
     var aesCtr = new aesjs.ModeOfOperation.ctr(key);
+    console.log("new aesCtr made");
     var decryptedBytes = aesCtr.decrypt(encryptedBytes);
+    console.log("Decrypted bytes");
 
     // Convert our bytes back into text
     var decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes);
-    console.log(decryptedText);
+    console.log("Decrypted text; " + decryptedText);
 
     var decryptedJSON = JSON.parse(decryptedText);
     var id = decryptedJSON.id;
