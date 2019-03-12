@@ -43,16 +43,18 @@ router.get('/:machine/', function (req, res, next) {
 
     db.any(`SELECT machine_alcohol, machine_mixer FROM machines WHERE machine_id = ` + machine + `;`)
         .then(result => {
-            alcohol = result[0].machine_alcohol;
-            mixer = result[0].machine_alcohol;
+            // alcohol = result[0].machine_alcohol;
+            // mixer = result[0].machine_alcohol;
 
-            console.log("Alcohol: " + alcohol);
-            console.log("Mixer: " + mixer);
+            // console.log("Alcohol: " + alcohol);
+            // console.log("Mixer: " + mixer);
 
-            res.send({
-                alcohol: alcohol,
-                mixer: mixer,
-            })
+            // res.send({
+            //     alcohol: alcohol,
+            //     mixer: mixer,
+            // })
+
+            res.send(result);
         })
         .catch(err => {
             console.log(err);
