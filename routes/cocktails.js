@@ -33,7 +33,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/:machine/', function (req, res, next) {
-    let machine = req.params.machine;
+    // let machine = req.params.machine;
 
     // Make sure no SQL injection
     // if (!Number.isInteger(parseInt(machine))) {
@@ -41,7 +41,8 @@ router.get('/:machine/', function (req, res, next) {
     //     return;
     // }
 
-    db.any(`SELECT machine_alcohol, machine_mixer FROM machines WHERE machine_id = ` + machine + `;`)
+    // db.any(`SELECT machine_alcohol, machine_mixer FROM machines WHERE machine_id = ` + machine + `;`)
+    db.any(`SELECT machine_alcohol, machine_mixer FROM machines WHERE machine_id = 1;`)
         .then(result => {
             // alcohol = result[0].machine_alcohol;
             // mixer = result[0].machine_alcohol;
