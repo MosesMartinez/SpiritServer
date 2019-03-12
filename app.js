@@ -8,7 +8,6 @@ var logger = require('morgan');
 
 var notificationTest = require('./routes/notificationtest');
 var read = require('./routes/read');
-var update = require('./routes/update');
 var users = require('./routes/users');
 var alcohol = require('./routes/alcohol');
 var login = require('./routes/login');
@@ -32,7 +31,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/notificationtest', notificationTest);
 app.use('/tokens', read);
-app.use('/tokens', update);
 app.use('/users', users);
 app.use('/', alcohol);
 app.use('/login', login);
