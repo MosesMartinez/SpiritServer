@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var cocktails = require('../js/liquors').liquors;
+var db = require('../db');
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
