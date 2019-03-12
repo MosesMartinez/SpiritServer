@@ -53,6 +53,9 @@ router.get('/:machine/', function (req, res, next) {
                 alcohol: alcohol,
                 mixer: mixer,
             })
+        })
+        .catch(err => {
+            console.log(err);
         });
 
     // let cocktailSet = new Set();
