@@ -36,10 +36,10 @@ router.get('/:machine/', function (req, res, next) {
     let machine = req.params.machine;
 
     // Make sure no SQL injection
-    if (!Number.isInteger(parseInt(machine))) {
-        res.send("Not a valid input");
-        return;
-    }
+    // if (!Number.isInteger(parseInt(machine))) {
+    //     res.send("Not a valid input");
+    //     return;
+    // }
 
     db.any(`SELECT machine_alcohol, machine_mixer FROM machines WHERE machine_id = ` + machine + `;`)
         .then(result => {
