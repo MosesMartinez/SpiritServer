@@ -205,6 +205,12 @@ const liquors =
             image: null,
         },
         {
+            name: 'Spritsy Cranberry Rum',
+            alcohols: ['Rum'],
+            mixers: ['Sprite', 'Cranberry Juice'],
+            image: null,
+        },
+        {
             name: 'Rum and Sprite',
             alcohols: ['Rum'],
             mixers: ['Sprite'],
