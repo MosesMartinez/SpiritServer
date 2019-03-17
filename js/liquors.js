@@ -10,7 +10,7 @@ const liquors =
             name: 'Vodka Tonic',
             alcohols: ['Vodka'],
             mixers: ['Tonic'],
-            image: "https://www.thecocktaildb.com/images/media/drink/lmj2yt1504820500.jpg",
+            image: "'https://spirit-machine.herokuapp.com/images/vodka_tonic_thumb.jpg'",
         },
         {
             name: 'Vodka Soda',
@@ -22,7 +22,7 @@ const liquors =
             name: 'Vodka Cranberry',
             alcohols: ['Vodka'],
             mixers: ['Cranberry Juice'],
-            image: null,
+            image: 'https://spirit-machine.herokuapp.com/images/vodka_cranberry_thumb.jpg',
         },
         {
             name: 'Copperhead',
@@ -34,13 +34,13 @@ const liquors =
             name: 'Vodka and Coke',
             alcohols: ['Vodka'],
             mixers: ['Coke'],
-            image: null,
+            image: 'https://spirit-machine.herokuapp.com/images/vodka_coke_thumb.jpg',
         },
         {
             name: 'Vodka and Sprite',
             alcohols: ['Vodka'],
             mixers: ['Sprite'],
-            image: null,
+            image: 'https://spirit-machine.herokuapp.com/images/vodka_sprite_thumb.jpg',
         },
         {
             name: 'Tequila Screwdriver',
