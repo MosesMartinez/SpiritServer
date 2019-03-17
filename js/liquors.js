@@ -178,7 +178,7 @@ const liquors =
             name: 'Rum Tonic',
             alcohols: ['Rum'],
             mixers: ['Tonic'],
-            image: 'spirit-machine.herokuapp.com/images/rum_tonic_thumb.jpg',
+            image: 'https://spirit-machine.herokuapp.com/images/rum_tonic_thumb.jpg',
         },
         {
             name: 'Rum Soda',
@@ -190,7 +190,7 @@ const liquors =
             name: 'Rum Cranberry',
             alcohols: ['Rum'],
             mixers: ['Cranberry Juice'],
-            image: 'spirit-machine.herokuapp.com/images/rum_cranberry_thumb.jpg',
+            image: 'https://spirit-machine.herokuapp.com/images/rum_cranberry_thumb.jpg',
         },
         {
             name: 'Rum Ginger',
@@ -202,19 +202,19 @@ const liquors =
             name: 'Cuba Libre',
             alcohols: ['Rum'],
             mixers: ['Coke'],
-            image: 'spirit-machine.herokuapp.com/images/cuba_libre_thumb.jpg',
+            image: 'https://spirit-machine.herokuapp.com/images/cuba_libre_thumb.jpg',
         },
         {
             name: 'Spritsy Cranberry Rum',
             alcohols: ['Rum'],
             mixers: ['Sprite', 'Cranberry Juice'],
-            image: 'spirit-machine.herokuapp.com/images/rum_cranberry_sprite_thumb.jpg',
+            image: 'https://spirit-machine.herokuapp.com/images/rum_cranberry_sprite_thumb.jpg',
         },
         {
             name: 'Rum and Sprite',
             alcohols: ['Rum'],
             mixers: ['Sprite'],
-            image: 'spirit-machine.herokuapp.com/images/rum_sprite_thumb.jpg',
+            image: 'https://spirit-machine.herokuapp.com/images/rum_sprite_thumb.jpg',
         },
     ]
 
