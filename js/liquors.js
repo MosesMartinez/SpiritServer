@@ -178,7 +178,7 @@ const liquors =
             name: 'Rum Tonic',
             alcohols: ['Rum'],
             mixers: ['Tonic'],
-            image: null,
+            image: './images/rum_tonic_thumb.jpg',
         },
         {
             name: 'Rum Soda',
@@ -190,7 +190,7 @@ const liquors =
             name: 'Rum Cranberry',
             alcohols: ['Rum'],
             mixers: ['Cranberry Juice'],
-            image: null,
+            image: './images/rum_cranberry_thumb.jpg',
         },
         {
             name: 'Rum Ginger',
@@ -202,19 +202,19 @@ const liquors =
             name: 'Cuba Libre',
             alcohols: ['Rum'],
             mixers: ['Coke'],
-            image: null,
+            image: './images/cuba_libre_thumb.jpg',
         },
         {
             name: 'Spritsy Cranberry Rum',
             alcohols: ['Rum'],
             mixers: ['Sprite', 'Cranberry Juice'],
-            image: null,
+            image: './images/rum_cranberry_sprite_thumb.jpg',
         },
         {
             name: 'Rum and Sprite',
             alcohols: ['Rum'],
             mixers: ['Sprite'],
-            image: null,
+            image: './images/rum_sprite_thumb.jpg',
         },
     ]
 
