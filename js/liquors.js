@@ -10,7 +10,7 @@ const liquors =
             name: 'Vodka Tonic',
             alcohols: ['Vodka'],
             mixers: ['Tonic'],
-            image: "'https://spirit-machine.herokuapp.com/images/vodka_tonic_thumb.jpg'",
+            image: 'https://spirit-machine.herokuapp.com/images/vodka_tonic_thumb.jpg',
         },
         {
             name: 'Vodka Soda',
