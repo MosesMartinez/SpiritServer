@@ -74,13 +74,11 @@ router.get('/:machine/', function (req, res, next) {
                 );
             });
 
-            let cocktailSet = new Set();
-
             cocktailObj.forEach((cocObj, alcNum) => {
                 mixers.forEach((mix, mixNum) => {
                     cocktails.forEach(coc => {
                         if (coc.alcohols.includes(cocObj.alcohol) && coc.mixers.includes(mix)) {
-                            let curCocktail =
+                            const curCocktail =
                             {
                                 name: coc.name,
                                 price: 5.00,
@@ -94,14 +92,12 @@ router.get('/:machine/', function (req, res, next) {
                                     container: mixNum,
                                 },
                             };
-                            // cocObj.cocktails.push(curCocktail);
 
-                            cocktailSet.add(curCocktail);
+                            if (!cocObj.cocktails.contains(curCocktail.name))
+                                cocObj.cocktails.push(curCocktail);
                         }
                     });
                 });
-                cocObj.cocktails = Array.from(cocktailSet);
-                cocktailSet.clear();
             });
 
             console.log(cocktailObj);
