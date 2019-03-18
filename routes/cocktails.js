@@ -74,8 +74,8 @@ router.get('/:machine/', function (req, res, next) {
                 );
             });
 
-            cocktailObj.forEach(cocObj => {
-                mixers.forEach(mix => {
+            cocktailObj.forEach((cocObj, alcNum) => {
+                mixers.forEach((mix, mixNum) => {
                     cocktails.forEach(coc => {
                         if (coc.alcohols.includes(cocObj.alcohol) && coc.mixers.includes(mix)) {
                             let curCocktail =
@@ -83,6 +83,8 @@ router.get('/:machine/', function (req, res, next) {
                                 name: coc.name,
                                 price: 5.00,
                                 image: coc.image,
+                                alcohol: alcNum,
+                                mixer: mixNum,
                             };
                             cocObj.cocktails.push(curCocktail);
                         }
