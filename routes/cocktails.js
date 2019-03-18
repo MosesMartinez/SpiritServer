@@ -104,7 +104,8 @@ router.get('/:machine/', function (req, res, next) {
                 });
 
                 for (let i = 0; cocObj.cocktails[i] != null; ++i) {
-                    if (cocObj.cocktails[i].name == cocObj.cocktails[i + 1].name) {
+                    if (cocObj.cocktails[i + 1] != null &&
+                        cocObj.cocktails[i].name == cocObj.cocktails[i + 1].name) {
                         cocObj.cocktails.splice(i + 1, 1);
                         --i;
                     }
