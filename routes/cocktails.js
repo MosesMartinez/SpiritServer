@@ -83,8 +83,14 @@ router.get('/:machine/', function (req, res, next) {
                                 name: coc.name,
                                 price: 5.00,
                                 image: coc.image,
-                                alcohol: alcNum,
-                                mixer: mixNum,
+                                alcohol: {
+                                    name: alc,
+                                    container: alcNum,
+                                },
+                                mixer: {
+                                    name: mix,
+                                    container: mixNum,
+                                },
                             };
                             cocObj.cocktails.push(curCocktail);
                         }
