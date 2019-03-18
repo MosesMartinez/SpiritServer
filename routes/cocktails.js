@@ -95,6 +95,8 @@ router.get('/:machine/', function (req, res, next) {
                                 },
                             };
                             cocObj.cocktails.push(curCocktail);
+
+                            cocktailSet.push(curCocktail);
                         }
                     });
                 });
@@ -102,11 +104,7 @@ router.get('/:machine/', function (req, res, next) {
 
             console.log(cocktailObj);
 
-            var cocktailsUnique = cocktailObj[0].cocktails.filter(function (item, index) {
-                return cocktailObj[0].cocktails.indexOf(item) >= index;
-            });
-
-            console.log(cocktailsUnique);
+            console.log(Array.from(cocktailSet));
 
             res.send(cocktailObj);
 
