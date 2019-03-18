@@ -99,9 +99,9 @@ router.get('/:machine/', function (req, res, next) {
                             cocktailSet.add(curCocktail);
                         }
                     });
-                    cocObj.cocktails = Array.from(cocktailSet);
-                    cocktailSet.clear();
                 });
+                cocObj.cocktails = Array.from(cocktailSet);
+                cocktailSet.clear();
             });
 
             console.log(cocktailObj);
