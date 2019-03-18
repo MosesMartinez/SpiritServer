@@ -74,6 +74,8 @@ router.get('/:machine/', function (req, res, next) {
                 );
             });
 
+            let cocktailSet = new Set();
+
             cocktailObj.forEach((cocObj, alcNum) => {
                 mixers.forEach((mix, mixNum) => {
                     cocktails.forEach(coc => {
@@ -99,6 +101,12 @@ router.get('/:machine/', function (req, res, next) {
             });
 
             console.log(cocktailObj);
+
+            var cocktailsUnique = cocktailObj[0].cocktails.filter(function (item, index) {
+                return cocktailObj[0].cocktails.indexOf(item) >= index;
+            });
+
+            console.log(cocktailsUnique);
 
             res.send(cocktailObj);
 
