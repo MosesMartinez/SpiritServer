@@ -96,7 +96,7 @@ router.get('/:machine/', function (req, res, next) {
                             };
                             cocObj.cocktails.push(curCocktail);
 
-                            cocktailSet.push(curCocktail);
+                            cocktailSet.add(curCocktail);
                         }
                     });
                 });
