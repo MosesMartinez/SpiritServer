@@ -93,7 +93,7 @@ router.get('/:machine/', function (req, res, next) {
                                 },
                             };
 
-                            if (!cocObj.cocktails.includes(curCocktail.name))
+                            if (!cocObj.cocktails.includes(curCocktail))
                                 cocObj.cocktails.push(curCocktail);
                         }
                     });
