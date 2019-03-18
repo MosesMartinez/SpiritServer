@@ -102,6 +102,13 @@ router.get('/:machine/', function (req, res, next) {
                 cocObj.cocktails.sort((a, b) => {
                     return a.name.localeCompare(b.name);
                 });
+
+                for (let i = 0; cocObj.cocktails[i] != null; ++i) {
+                    if (cocObj.cocktails[i].name == cocObj.cocktails[i + 1].name) {
+                        cocObj.cocktails.splice(i + 1, 1);
+                        --i;
+                    }
+                }
             });
 
             console.log(cocktailObj);
