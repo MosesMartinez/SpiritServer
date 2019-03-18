@@ -84,7 +84,7 @@ router.get('/:machine/', function (req, res, next) {
                                 price: 5.00,
                                 image: coc.image,
                                 alcohol: {
-                                    name: alc,
+                                    name: cocObj.alcohol,
                                     container: alcNum,
                                 },
                                 mixer: {
