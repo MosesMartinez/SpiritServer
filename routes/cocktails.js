@@ -100,7 +100,7 @@ router.get('/:machine/', function (req, res, next) {
                 });
 
                 cocObj.cocktails.sort((a, b) => {
-                    a.localeCompare(b);
+                    return a.name.localeCompare(b.name);
                 });
             });
 
