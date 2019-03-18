@@ -94,17 +94,17 @@ router.get('/:machine/', function (req, res, next) {
                                     container: mixNum,
                                 },
                             };
-                            cocObj.cocktails.push(curCocktail);
+                            // cocObj.cocktails.push(curCocktail);
 
                             cocktailSet.add(curCocktail);
                         }
                     });
+                    cocktailObj.cocktails = Array.from(cocktailSet);
+                    cocktailSet.clear();
                 });
             });
 
             console.log(cocktailObj);
-
-            console.log(Array.from(cocktailSet));
 
             res.send(cocktailObj);
 
