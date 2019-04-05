@@ -99,10 +99,12 @@ router.get('/:machine/', function (req, res, next) {
                     });
                 });
 
+                // Sort by name
                 cocObj.cocktails.sort((a, b) => {
                     return a.name.localeCompare(b.name);
                 });
 
+                // Remove duplicates
                 for (let i = 0; cocObj.cocktails[i] != null; ++i) {
                     if (cocObj.cocktails[i + 1] != null &&
                         cocObj.cocktails[i].name == cocObj.cocktails[i + 1].name) {
