@@ -19,16 +19,18 @@ class drinks extends Component {
         let { machine } = this.state;
         let {drinkList} = this.state;
         // console.log(machine);
-        axios.get('/api/drinkList', {
-            params: {
-                alcohol: machine,
-            }
-        })
+        //axios.get('/api/drinkList', {
+	axios.get('/cocktails?alcohols=Vodka,Tequila,Gin,Whiskey&mixers=Orange%20Juice,Soda,Tonic,Sprite')
+            //params: {
+            //    alcohol: machine,
+            //}
+        //})
             .then((results) => {
-                drinkList = results.data;
-                this.setState({
-                    drinkList: drinkList,
-                })
+            //    drinkList = results.data;
+            //    this.setState({
+            //        drinkList: drinkList,
+            //    })
+		console.log(results);
             })
             .catch((e) => {
                 console.log(e);
