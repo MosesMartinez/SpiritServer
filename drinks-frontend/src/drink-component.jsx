@@ -10,15 +10,14 @@ class drinkComponent extends Component {
       pictures: [],
       name: '',
       price: '',
-      image: false,
-      icon: true,
+      alcohol: '',
+      mixer: '',
     };
     this.onDrop = this.onDrop.bind(this);
   }
   onDrop(picture) {
     this.setState({
       pictures: this.state.pictures.concat(picture),
-      icon: false,
     });
   }
   render() {
@@ -36,19 +35,41 @@ class drinkComponent extends Component {
         <div>
           Cocktail Name:
           <div className="inputFields">
-            <input value={this.props.name} 
-            onChange ={ (e) => {
-              this.setState({name: e.target.value})}
-            }/>
+            <input value={this.props.name}
+              onChange={(e) => {
+                this.setState({ name: e.target.value })
+              }
+              } />
+          </div>
+        </div>
+        <div>
+          Alcohol:
+          <div className="inputFields">
+            <input value={this.props.alcohol}
+              onChange={(e) => {
+                this.setState({ name: e.target.value })
+              }
+              } />
+          </div>
+        </div>
+        <div>
+          Mixer
+          <div className="inputFields">
+            <input value={this.props.mixer}
+              onChange={(e) => {
+                this.setState({ name: e.target.value })
+              }
+              } />
           </div>
         </div>
         <div>
           Cocktail Price:
           <div className="inputFields">
-            <input className="input" value={this.state.price} 
-            onChange ={ (e) => {
-              this.setState({price: e.target.value})}
-            }/>
+            <input className="input" value={this.state.price}
+              onChange={(e) => {
+                this.setState({ price: e.target.value })
+              }
+              } />
           </div>
           <button onClick={this.deleteDrink}>Remove</button>
         </div>

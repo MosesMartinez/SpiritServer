@@ -12,57 +12,47 @@ class drinks extends Component {
             machine: 'Select',
             drinkList: [],
             newList: [],
+            machineList: [],
         }
     }
 
-    componentDidMount = () => {
+    generateDrinks = () => {
         let { machine } = this.state;
         let {drinkList} = this.state;
-        // console.log(machine);
-        //axios.get('/api/drinkList', {
-	axios.get('/cocktails?alcohols=Vodka,Tequila,Gin,Whiskey&mixers=Orange%20Juice,Soda,Tonic,Sprite')
-            //params: {
-            //    alcohol: machine,
-            //}
-        //})
+        console.log(machine);
+        if(machine !== 'Select'){
+        axios.get('/cocktails?alcohols=Vodka,Tequila,Gin,Whiskey&mixers=Orange%20Juice,Soda,Tonic,Sprite')
             .then((results) => {
-            //    drinkList = results.data;
-            //    this.setState({
-            //        drinkList: drinkList,
-            //    })
+                drinkList = results.data;
+                console.log(drinkList);
+                this.setState({
+                    drinkList: drinkList,
+                })
 		console.log(results);
             })
             .catch((e) => {
                 console.log(e);
             })
     }
-    generateDrinks = () => {
-        fetch('/api/drinkList')
-            .then(res => res.json())
-            .then((results) => {
-                console.log(results);
-                this.setState({
-                    isLoaded: true,
-                    drinkList: results,
-                })
-            },
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            )
-    }
+}
     addDrinkComponent = () => {
-        let { newList, drinkList } = this.state;
+        let { drinkList } = this.state;
+        let newList = [<_drinkComponent/>];
+        if( 0 !== drinkList.length){
         this.setState({
-            newList: [<_drinkComponent function={this.deleteDrink}/>].concat(newList),
-            drinkList: newList.concat(drinkList),
+        //newList:[<_drinkComponent />].concat(newList),
+        drinkList: newList.concat(drinkList),
         })
+        }
     }
-    deleteDrink () {
+    //Todo
+    deleteDrink = () => {
         console.log('inparent');
+        let {drinkList} = this.state;
+        console.log(drinkList);
+    }
+    //Todo
+    saveMachine = () =>{
         let {drinkList} = this.state;
         console.log(drinkList);
     }
@@ -74,7 +64,7 @@ class drinks extends Component {
                     <select id="Machine" onChange={(e) => {
                         this.setState({ machine: e.target.value })
                     }} value={this.state.machine}>
-                        <option value="select">Select</option>
+                        <option value="Select">Select</option>
                         <option value="Tequila,Vodka">Machine 1</option>
                         <option value="Gin,Whiskey">Machine 2</option>
                         <option value="Vodka">Machine 3</option>
@@ -82,18 +72,18 @@ class drinks extends Component {
                         <option value="Tequila,Vodka,Whiskey,Rum">Machine 5</option>
                     </select>
                     {this.state.machine}
-                    <button onClick={this.componentDidMount}>Generate</button>
+                    <button onClick={this.generateDrinks}>Generate</button>
                 </div>
                 <div>
-                    <button>Save Machine</button>
+                    <button onClick ={this.saveMachine}>Save Machine</button>
                     <button onClick={this.addDrinkComponent}>Add Drink</button>
                 </div>
                 {
                     <div>
                         {this.state.newList}
                         {drinkList.map(drink => (
-                            <div className="layout" key={drink.drinks}>
-                                {<_drinkComponent name={drink.name} onClick={this.deleteDrink} />}
+                            <div className="layout" key={drink.name}>
+                                {<_drinkComponent name={drink.name} alcohol={drink.alcohols} mixer={drink.mixers} onClick={this.deleteDrink} />}
                             </div>
                         ))}
                     </div>

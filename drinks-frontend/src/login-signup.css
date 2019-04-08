@@ -1,0 +1,19 @@
+
+.LoginFrame{
+    width: 75%;
+    margin: auto;
+    margin-bottom: 5%;
+    color: black;
+    background-color: lightgray;
+    border: 5px solid black;
+    border-radius: 5px;
+}
+.SignUpFrame{
+    width: 75%;
+    margin: auto;
+    margin-bottom: 5%;
+    color: black;
+    background-color: lightgray;
+    border: 5px solid black;
+    border-radius: 5px;
+}
