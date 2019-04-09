@@ -21,18 +21,21 @@ class signup extends Component{
         let {Password, ConfirmPswrd, PswrdError, Email} = this.state;
         if(Password === ConfirmPswrd){
             console.log(Password + ConfirmPswrd)
-            // axios.post('/signup', {
-            //     params:{
-            //         email: this.state.Email,
-            //         password: this.state.Password,
-            //     }
-            // })
-            axios.post(`/signup?email=${Email}&password=${Password}`)
+            axios.post('/signup', {
+                params:{
+                    email: Email,
+                    password: Password,
+                }
+            })
+        //    axios.post(`/signup?email=${Email}&password=${Password}`)
             .then((networkresponse) =>{
                let userId = networkresponse.data;
                this.setState({
                    UserId: userId,
                })
+            })
+            .catch(error =>{
+                console.log(error);
             })
         }
         else{

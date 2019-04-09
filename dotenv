@@ -1,1 +1,0 @@
-DATABASE_URL=postgres://spirit:12345@localhost:5432/spirit_machine
