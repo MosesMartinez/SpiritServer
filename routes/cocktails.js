@@ -28,6 +28,10 @@ router.get('/', function (req, res, next) {
 
     let cocktailArray = Array.from(cocktailSet);
 
+    cocktailArray.forEach((cocktail, index) => {
+        cocktail.index = index;
+    });
+
     console.log(cocktailArray);
 
     res.send(cocktailArray);

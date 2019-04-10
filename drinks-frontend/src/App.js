@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import Drinks from './drinks';
+import Drinks from './drinks.jsx';
 import Login from './login';
 import SignUp from './signup';
 
