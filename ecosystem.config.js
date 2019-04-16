@@ -6,9 +6,9 @@ module.exports = {
   },
   {
     name: 'front',
-    script: 'node_modules/react-scripts/bin/react-scripts.js',
+    script: 'npm',
     args: 'start',
     instances: 1,
-    cwd: 'drinks-frontend/'
+    cwd: 'drinks-frontend/',
   }],
 };
