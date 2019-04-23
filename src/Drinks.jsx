@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DrinkComponent from './drink-component.jsx';
+import DrinkComponent from './DrinkComponent.jsx';
 import "./drinkComponent.css";
 import axios from 'axios';
 class Drinks extends Component {
@@ -21,7 +21,7 @@ class Drinks extends Component {
         let { drinkList } = this.state;
         console.log(machine);
         if (machine !== 'Select') {
-            axios.get('/cocktails?alcohols=Vodka,Tequila,Gin,Whiskey&mixers=Orange%20Juice,Soda,Tonic,Sprite')
+            axios.get('/api/cocktails?alcohols=Vodka,Tequila,Gin,Whiskey&mixers=Orange%20Juice,Soda,Tonic,Sprite')
                 .then((results) => {
                     drinkList = results.data;
                     drinkList.forEach(drink => {

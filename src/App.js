@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import Drinks from './drinks.jsx';
-import Login from './login';
-import SignUp from './signup';
+import Drinks from './Drinks.jsx';
+import Login from './Login.jsx';
+import Signup from './Signup.jsx';
 
 class App extends Component {
 
@@ -10,7 +10,7 @@ class App extends Component {
     return (
       <div className="App">
         <Login />
-        <SignUp />
+        <Signup />
         <Drinks />
       </div>
     );

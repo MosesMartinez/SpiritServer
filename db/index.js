@@ -1,4 +1,5 @@
 const pgp = require('pg-promise')();
-require('dotenv').config();
-const connection = pgp(process.env.DATABASE_URL);
+const pgpURL = require('../keys/encryptKey').pgp;
+const connection = pgp(pgpURL);
+
 module.exports = connection;
