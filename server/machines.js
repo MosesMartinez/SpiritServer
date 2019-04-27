@@ -24,11 +24,13 @@ app.get('/:token', (req, res) => {
                 singleMachine.mixer = [];
 
                 for (let i = 0; i < 4; ++i) {
+                    let emptyTime = machine.machine_empty_time[i];
+                    if (machine.machine_empty[i] == false) emptyTime = null;
                     singleMachine.alcohol.push({
                         name: machine.machine_alcohol[i],
                         container: i,
                         empty: machine.machine_empty[i],
-                        empty_time: machine.machine_empty_time[i],
+                        empty_time: emptyTime,
                     })
 
                     singleMachine.mixer.push({
