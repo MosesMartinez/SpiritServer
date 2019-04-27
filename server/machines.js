@@ -16,7 +16,29 @@ app.get('/:token', (req, res) => {
     db.any(query)
         .then(result => {
             console.log("Got data");
-            res.send(result);
+            let machineData = []
+            result.forEach(machine => {
+                let singleMachine = {}
+                singleMachine.id = machine.machine_id
+                singleMachine.alcohol = [];
+                singleMachine.mixer = [];
+
+                for (let i = 0; i < 4; ++i) {
+                    singleMachine.alcohol.push({
+                        name: machine.machine_alcohol[i],
+                        container: i,
+                        empty: machine.machine_empty[i],
+                        empty_time: machine.machine_empty_time[i],
+                    })
+
+                    singleMachine.mixer.push({
+                        name: machine.machine_mixer[i],
+                        container: i,
+                    });
+                }
+                machineData.push(singleMachine);
+            });
+            res.send(machineData);
         })
         .catch(err => {
             console.log(err);
