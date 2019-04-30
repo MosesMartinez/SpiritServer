@@ -11,6 +11,7 @@ app.use(bodyParser.json())
 app.post('/', function (req, res, next) {
   const email = req.body.email.trim();
   const password = req.body.password.trim()
+  console.log(req.body.pushToken);
 
   const query = `
     SELECT user_token, user_password
@@ -23,7 +24,9 @@ app.post('/', function (req, res, next) {
       const isPassword = hash.verify(password, result[0].user_password);
 
       if (isPassword) {
-        res.send(result[0].user_token);
+        res.json({
+		token: result[0].user_token,
+	});
       }
       else
         res.sendStatus(404);
