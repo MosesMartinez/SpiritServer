@@ -10,8 +10,7 @@ app.post('/:machine', (req, res, next) => {
     const query = `
         SELECT token_push_token
         FROM tokens
-        INNER JOIN machines ON token_user_id=machine_user_id
-        WHERE machine_id=${machine};
+        INNER JOIN machines ON token_user_id=machine_user_id;
     `;
 
     db.any(query)
@@ -44,8 +43,7 @@ app.post('/:machine', (req, res, next) => {
                 }]
             })
                 .then(resp => {
-                    // res.send(resp);
-                    res.send('Got it');
+                    res.send(resp.data);
                     console.log(resp);
                 })
                 .catch(err => {
