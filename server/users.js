@@ -27,11 +27,11 @@ app.post('/', function (req, res, next) {
         res.send(result[0].user_token);
       }
       else
-        next(createError(404));
+        res.send("Not found");
     })
     .catch(err => {
       console.log(err);
-      next(createError(404));
+      res.send(err);
     });
 });
 
