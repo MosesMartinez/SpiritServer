@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const hash = require('password-hash');
+const tokenizer = require('object-hash');
 
 const db = require('../db');
 
@@ -11,12 +12,14 @@ app.use(bodyParser.json())
 app.post('/', function (req, res, next) {
   const email = req.body.email;
   const password = hash.generate(req.body.password.trim());
+  const token = tokenizer(Date.now());
 
   const query = `
-    SELECT user_token
-    FROM users
-    WHERE user_email='${email}'
-      AND user_password='${password}'
+    INSERT INTO users
+      (user_email, user_password, user_token)
+    VALUES
+      ('${email}', '${password}', '${token}')
+    RETURNING user_token
     ;`;
 
   db.any(query)
@@ -29,4 +32,4 @@ app.post('/', function (req, res, next) {
     });
 });
 
-app.listen(5003);
+app.listen(5004);
