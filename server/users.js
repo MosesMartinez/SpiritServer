@@ -29,12 +29,12 @@ app.post('/', function (req, res, next) {
         if (req.body.pushToken) {
           const query2 = `
           INSERT INTO tokens (token_user_id, token_push_token)
-          SELECT 1, 'ExponentPushToken[jKNx6pINi5FPdiEOzGhGg]'
+          SELECT ${result[0].user_id}, '${req.body.pushToken}'
           WHERE
             NOT EXISTS (
               SELECT token_push_token
               FROM tokens
-              WHERE token_push_token='ExponentPushToken[jKNx6pINi5FPdiEOzGhGg]'
+              WHERE token_push_token='${req.body.pushToken}'
             )
           ;
           `;
