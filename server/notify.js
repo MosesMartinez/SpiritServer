@@ -38,11 +38,7 @@ app.post('/:machine', (req, res, next) => {
                     'accept-encoding': 'gzip, deflate',
                     'content-type': 'application/json'
                 },
-                data: [{
-                    to: 'ExponentPushToken[jKNx6pINi5FPSWiEOzGhGg]',
-                    sound: "default",
-                    body: "Hello world!"
-                }]
+                toArray,
             })
                 .then(resp => {
                     res.send(resp.data);
