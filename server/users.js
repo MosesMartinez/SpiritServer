@@ -11,6 +11,8 @@ app.use(bodyParser.json())
 app.post('/', function (req, res, next) {
   const email = req.body.email;
   const password = hash.generate(req.body.password);
+  console.log('email: ' + email);
+  console.log('password: ' + password);
 
   const query = `
     SELECT user_token
@@ -21,6 +23,7 @@ app.post('/', function (req, res, next) {
 
   db.any(query)
     .then(token => {
+      console.log(token);
       res.send(token[0])
     })
     .catch(err => {
