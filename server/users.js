@@ -14,7 +14,7 @@ app.post('/', function (req, res, next) {
   console.log(req.body.pushToken);
 
   const query = `
-    SELECT user_token, user_password
+    SELECT user_token, user_password, user_id
     FROM users
     WHERE user_email='${email}'
     ;`;
@@ -24,9 +24,33 @@ app.post('/', function (req, res, next) {
       const isPassword = hash.verify(password, result[0].user_password);
 
       if (isPassword) {
+
+        // Insert push token if exists
+        if (req.body.pushToken) {
+          const query2 = `
+            INSERT INTO tokens (token_user_id, token_push_token)
+            VALUES (${result[0].user_id}, '${req.body.pushToken}')
+            WHERE
+              NOT EXISTS (
+                SELECT token_push_token
+                FROM tokens
+                WHERE token_push_token=${req.body.pushToken}
+              )
+            ;
+          `;
+          db.query(query2)
+            .then(() => {
+              console.log('Push token inserted')
+            })
+            .catch(err => {
+              console.log(err);
+            })
+        }
+        //////////
+
         res.json({
-		token: result[0].user_token,
-	});
+          token: result[0].user_token,
+        });
       }
       else
         res.sendStatus(404);
