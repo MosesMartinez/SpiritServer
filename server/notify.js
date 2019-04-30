@@ -28,18 +28,20 @@ app.post('/:machine', (req, res, next) => {
 
             console.log(toArray);
 
-            axios.post('https://exp.host/--/api/v2/push/send', {
+            axios({
+                method: 'post',
+                url: 'https://exp.host/--/api/v2/push/send',
                 headers: {
                     'host': 'exp.host',
                     'accept': 'application/json',
                     'accept-encoding': 'gzip, deflate',
-                    'content-type': 'application/json',
+                    'content-type': 'application/json'
                 },
-                [{
-                    "to": 'ExponentPushToken[jKNx6pINi5FPSWiEOzGhGg]',
-                    "sound": "default",
-                    "body": "Hello world!"
-                }]
+                data: {
+                    to: 'ExponentPushToken[jKNx6pINi5FPSWiEOzGhGg]',
+                    sound: "default",
+                    body: "Hello world!"
+                }
             })
                 .then(resp => {
                     res.send(resp);
