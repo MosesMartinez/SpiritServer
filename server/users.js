@@ -9,8 +9,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.post('/', function (req, res, next) {
-  const email = req.body.email;
-  const password = hash.generate(req.body.password.trim());
+  const email = req.body.email.trim();
+  const password = req.body.password.trim()
 
   const query = `
     SELECT user_token, user_password
@@ -20,18 +20,17 @@ app.post('/', function (req, res, next) {
 
   db.any(query)
     .then(result => {
-      const isPassword = hash.verify(result[0].user_password, password);
+      const isPassword = hash.verify(password, result[0].user_password);
 
       if (isPassword) {
-        console.log(result);
         res.send(result[0].user_token);
       }
       else
-        res.send("Not found");
+        res.sendStatus(404);
     })
     .catch(err => {
       console.log(err);
-      res.send(err);
+      res.sendStatus(err);
     });
 });
 
