@@ -25,6 +25,11 @@ module.exports = {
     cwd: 'server/',
   },
   {
+    name: 'notify',
+    script: 'notify.js',
+    cwd: 'server/',
+  },
+  {
     name: 'wallet',
     script: 'wallet.js',
     cwd: 'server/',
