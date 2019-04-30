@@ -15,6 +15,11 @@ module.exports = {
     cwd: 'server/',
   },
   {
+    name: 'users',
+    script: 'users.js',
+    cwd: 'server/',
+  },
+  {
     name: 'wallet',
     script: 'wallet.js',
     cwd: 'server/',
