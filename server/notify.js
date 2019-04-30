@@ -26,6 +26,8 @@ app.post('/:machine', (req, res, next) => {
                 });
             });
 
+            console.log(toArray);
+
             axios.post('https://exp.host/--/api/v2/push/send', {
                 headers: {
                     'host': 'exp.host',
