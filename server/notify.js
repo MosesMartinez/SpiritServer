@@ -10,7 +10,8 @@ app.post('/:machine', (req, res, next) => {
     const query = `
         SELECT token_push_token
         FROM tokens
-        INNER JOIN machines ON token_user_id=machine_user_id;
+        INNER JOIN machines ON token_user_id=machine_user_id
+        WHERE machine_id=${machine};
     `;
 
     db.any(query)
@@ -18,7 +19,11 @@ app.post('/:machine', (req, res, next) => {
             let toArray = []
 
             tokens.forEach(token => {
-                toArray.push(token.token_push_token);
+                toArray.push({
+                    "to": token.token_push_token,
+                    "sound": "default",
+                    "body": "Hello world!"
+                });
             });
 
             axios.post('https://exp.host/--/api/v2/push/send', {
