@@ -13,15 +13,21 @@ app.post('/', function (req, res, next) {
   const password = hash.generate(req.body.password.trim());
 
   const query = `
-    SELECT user_token
+    SELECT user_token, user_password
     FROM users
     WHERE user_email='${email}'
-      AND user_password='${password}'
     ;`;
 
   db.any(query)
-    .then(token => {
-      res.send(token[0])
+    .then(result => {
+      const isPassword = hash.verify(result[0].user_password, password);
+
+      if (isPassword) {
+        console.log(result);
+        res.send(result[0].user_token);
+      }
+      else
+        next(createError(404));
     })
     .catch(err => {
       console.log(err);
