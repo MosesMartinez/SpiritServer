@@ -9,13 +9,15 @@ app.post('/:machine', (req, res, next) => {
 
     const query = `
         SELECT token_push_token
-        FROM tokens
-        INNER JOIN machines ON token_user_id=machine_user_id;
+        FROM machines
+        INNER JOIN tokens ON token_user_id=machine_user_id;
     `;
 
     db.any(query)
         .then(tokens => {
             let toArray = []
+
+            console.log(tokens);
 
             tokens.forEach(token => {
                 toArray.push({
@@ -44,7 +46,6 @@ app.post('/:machine', (req, res, next) => {
             })
                 .then(resp => {
                     res.send(resp.data);
-                    console.log(resp);
                 })
                 .catch(err => {
                     res.sendStatus(404);
