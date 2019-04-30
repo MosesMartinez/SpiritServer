@@ -40,6 +40,7 @@ app.post('/:machine', (req, res, next) => {
                     console.log(resp);
                 })
                 .catch(err => {
+                    res.sendStatus(404);
                     console.log(err);
                 })
         })
