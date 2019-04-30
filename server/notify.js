@@ -31,6 +31,7 @@ app.post('/:machine', (req, res, next) => {
                 toArray
             })
                 .then(resp => {
+                    res.send(resp);
                     console.log(resp);
                 })
                 .catch(err => {
