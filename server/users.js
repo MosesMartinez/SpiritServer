@@ -28,15 +28,15 @@ app.post('/', function (req, res, next) {
         // Insert push token if exists
         if (req.body.pushToken) {
           const query2 = `
-            INSERT INTO tokens (token_user_id, token_push_token)
-            VALUES (${result[0].user_id}, '${req.body.pushToken}')
-            WHERE
-              NOT EXISTS (
-                SELECT token_push_token
-                FROM tokens
-                WHERE token_push_token=${req.body.pushToken}
-              )
-            ;
+          INSERT INTO tokens (token_user_id, token_push_token)
+          SELECT 1, 'ExponentPushToken[jKNx6pINi5FPdiEOzGhGg]'
+          WHERE
+            NOT EXISTS (
+              SELECT token_push_token
+              FROM tokens
+              WHERE token_push_token='ExponentPushToken[jKNx6pINi5FPdiEOzGhGg]'
+            )
+          ;
           `;
           db.query(query2)
             .then(() => {
