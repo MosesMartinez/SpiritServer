@@ -65,7 +65,7 @@ app.post('/:machine', (req, res, next) => {
 app.post('/', (req, res) => {
     const machine = req.body.machine;
     const token = req.body.token;
-    const container = req.body.container;
+    const container = parseInt(req.body.container);
 
     let query = `
         SELECT machine_id
