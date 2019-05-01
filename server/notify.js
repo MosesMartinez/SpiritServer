@@ -8,7 +8,7 @@ app.post('/:machine', (req, res, next) => {
     const machine = req.params.machine;
 
     const query = `
-        SELECT token_push_token
+        SELECT DISTINCT token_push_token
         FROM machines
         INNER JOIN tokens ON token_user_id=machine_user_id;
     `;
@@ -45,7 +45,7 @@ app.post('/:machine', (req, res, next) => {
                 })
                 .catch(err => {
                     res.sendStatus(404);
-                    console.log(err);
+                    console.log(err.data);
                 })
         })
 });
