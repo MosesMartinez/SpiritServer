@@ -10,9 +10,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-ping = (machine) => {
+ping = (machine, container) => {
     const query = `
-    SELECT token_push_token
+    SELECT token_push_token, machine_alcohol
     FROM tokens
     LEFT JOIN machines
     ON machine_user_id= token_user_id
@@ -28,8 +28,9 @@ ping = (machine) => {
             tokens.forEach(token => {
                 toArray.push({
                     "to": token.token_push_token,
-                    "sound": "default",
-                    "body": "Hello world!"
+                    "sound": 'default',
+                    "title": `${token.machine_alcohol[container]} Low!`,
+                    "body": `Machine #${machine} - Container ${container + 1}`
                 });
             });
 
@@ -56,11 +57,11 @@ ping = (machine) => {
 }
 
 // Ping phones
-app.post('/:machine', (req, res, next) => {
-    const machine = req.params.machine;
+// app.post('/:machine', (req, res, next) => {
+//     const machine = req.params.machine;
 
-    res.send(ping(machine));
-});
+//     res.send(ping(machine));
+// });
 
 app.post('/', (req, res) => {
     const machine = req.body.machine;
@@ -97,7 +98,7 @@ app.post('/', (req, res) => {
                 .then(m => {
 
                     // Ping phones
-                    ping(machine)
+                    ping(machine, container)
                     res.send("Updated " + machine);
 
                 })
