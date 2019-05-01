@@ -38,7 +38,7 @@ app.post('/:machine', (req, res, next) => {
                     'accept-encoding': 'gzip, deflate',
                     'content-type': 'application/json'
                 },
-                toArray,
+                data: toArray
             })
                 .then(resp => {
                     res.send(resp.data);
