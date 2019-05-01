@@ -7,11 +7,12 @@ const db = require('../db');
 app.post('/:machine', (req, res, next) => {
     const machine = req.params.machine;
 
-    const query = `
-        SELECT DISTINCT token_push_token
-        FROM machines
-        INNER JOIN tokens ON token_user_id=machine_user_id;
-    `;
+    const query = `SELECT tokens_push_token
+    FROM tokens
+    LEFT JOIN machines
+    ON machine_user_id= token_user_id
+    WHERE machine_id=${machine}
+    ;`;
 
     db.any(query)
         .then(tokens => {
