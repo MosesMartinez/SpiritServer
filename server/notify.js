@@ -10,10 +10,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-// Ping phones
-app.post('/:machine', (req, res, next) => {
-    const machine = req.params.machine;
-
+ping = (machine) => {
     const query = `
     SELECT token_push_token
     FROM tokens
@@ -50,13 +47,19 @@ app.post('/:machine', (req, res, next) => {
                 data: toArray
             })
                 .then(resp => {
-                    res.send(resp.data);
+                    return resp.data;
                 })
                 .catch(err => {
-                    res.sendStatus(404);
-                    console.log(err.data);
+                    return err.data;
                 })
         })
+}
+
+// Ping phones
+app.post('/:machine', (req, res, next) => {
+    const machine = req.params.machine;
+
+    res.send(ping(machine));
 });
 
 app.post('/', (req, res) => {
@@ -94,14 +97,8 @@ app.post('/', (req, res) => {
                 .then(m => {
 
                     // Ping phones
-                    axios.post(`/${m.machine_id}`)
-                        .then(ping => {
-                            res.send("Updated " + m.machine_id);
-                        })
-                        .catch(err => {
-                            console.log(err);
-                            res.sendStatus(500);
-                        })
+                    ping(machine)
+                    res.send("Updated " + machine);
 
                 })
                 .catch(err => {
