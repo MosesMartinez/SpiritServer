@@ -7,7 +7,7 @@ const db = require('../db');
 app.post('/:machine', (req, res, next) => {
     const machine = req.params.machine;
 
-    const query = `SELECT tokens_push_token
+    const query = `SELECT token_push_token
     FROM tokens
     LEFT JOIN machines
     ON machine_user_id= token_user_id
