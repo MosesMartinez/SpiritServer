@@ -56,14 +56,8 @@ ping = (machine, container) => {
         })
 }
 
-// Ping phones
-// app.post('/:machine', (req, res, next) => {
-//     const machine = req.params.machine;
 
-//     res.send(ping(machine));
-// });
-
-app.post('/', (req, res) => {
+app.post('/empty', (req, res) => {
     const machine = req.body.machine;
     const token = req.body.token;
     const container = parseInt(req.body.container);
@@ -92,10 +86,9 @@ app.post('/', (req, res) => {
                 UPDATE machines
                 SET machine_empty[${container + 1}]=true, machine_empty_time[${container + 1}]=NOW()
                 WHERE machine_id=${mach[0].machine_id}
-                RETURNING machine_id
             ;`;
             db.any(query)
-                .then(m => {
+                .then(() => {
 
                     // Ping phones
                     ping(machine, container)
@@ -112,12 +105,55 @@ app.post('/', (req, res) => {
             console.log(err);
             res.sendStatus(401);
         })
+})
 
-    // Update db
-    // Join user token and machine
-    // Make sure token is associated with machine
+app.post('/full', (req, res) => {
+    const machine = req.body.machine;
+    const token = req.body.token;
+    const container = parseInt(req.body.container);
 
-    // Call ping
+    let query = `
+        SELECT machine_id
+        FROM machines
+        LEFT JOIN users
+        ON user_id=machine_user_id
+        WHERE user_token='${token}'
+            AND machine_id=${machine}
+    ;`;
+
+    // Check if token matches machine id
+    // by checking length of returned array
+    db.any(query)
+        .then(mach => {
+            if (mach.length == 0) {
+                res.sendStatus(404);
+                return
+            }
+
+            // Update machine empty status and time
+            // For correct container
+            query = `
+                UPDATE machines
+                SET machine_empty[${container + 1}]=false
+                WHERE machine_id=${mach[0].machine_id}
+            ;`;
+            db.any(query)
+                .then(() => {
+
+                    res.send("Updated " + machine);
+
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.sendStatus(404);
+                })
+
+        })
+        .catch(err => {
+            console.log(err);
+            res.sendStatus(401);
+        })
+
 })
 
 app.listen(5005);
