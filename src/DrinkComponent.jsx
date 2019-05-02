@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import "./drinkComponent.css"
-import ImageUploader from 'react-images-upload';
+import "./drinkComponent.css";
 
 class DrinkComponent extends Component {
 
@@ -20,12 +19,12 @@ class DrinkComponent extends Component {
   }
 
   componentWillMount() {
-    let { name, alcohol, mixer } = this.props;
+    let { name, alcohol, mixer, price } = this.props;
 
     if (name) this.setState({ name: name });
     if (alcohol) this.setState({ alcohol: alcohol });
     if (mixer) this.setState({ mixer: mixer });
-
+    if (price) this.setState({ price: price });
   }
 
   onDrop(picture) {
@@ -34,11 +33,50 @@ class DrinkComponent extends Component {
     });
   }
 
-  updatePrice = (index, e) => {
-    let { drinkList } = this.props.parent.state;
+  updateName = (index, e) =>{
+    let { cocktails } = this.props.parent.state;
 
-    for (let i = 0; i < drinkList.length; ++i) {
-      if (drinkList[i].index == index) {
+    for (let i = 0; i < cocktails.length; ++i) {
+      if (cocktails[i].index === index) {
+        index = i;
+        break;
+      }
+    }
+    cocktails[index].name = e.target.value;
+    this.props.parent.setState({ cocktails: cocktails })
+    this.setState({ name: cocktails[index].name })
+  }
+  updateAlcohol = (index, e) =>{
+    let { cocktails } = this.props.parent.state;
+
+    for (let i = 0; i < cocktails.length; ++i) {
+      if (cocktails[i].index === index) {
+        index = i;
+        break;
+      }
+    }
+    cocktails[index].alcohol.name = e.target.value;
+    this.props.parent.setState({ cocktails: cocktails })
+    this.setState({ alcohol: cocktails[index].alcohol.namee })
+  }
+  updateMixer = (index, e) =>{
+    let { cocktails } = this.props.parent.state;
+
+    for (let i = 0; i < cocktails.length; ++i) {
+      if (cocktails[i].index === index) {
+        index = i;
+        break;
+      }
+    }
+    cocktails[index].mixer.name = e.target.value;
+    this.props.parent.setState({ cocktails: cocktails })
+    this.setState({ mixer: cocktails[index].mixer.namee })
+  }
+  updatePrice = (index, e) => {
+    let { cocktails } = this.props.parent.state;
+
+    for (let i = 0; i < cocktails.length; ++i) {
+      if (cocktails[i].index === index) {
         index = i;
         break;
       }
@@ -50,65 +88,59 @@ class DrinkComponent extends Component {
     // else
     //   this.setState({ error: "" });
 
-    drinkList[index].price = e.target.value;
+    cocktails[index].price = e.target.value;
 
-    this.props.parent.setState({ drinkList: drinkList })
-    this.setState({ price: drinkList[index].price })
+    this.props.parent.setState({ cocktails: cocktails })
+    this.setState({ price: cocktails[index].price })
   }
 
   render() {
-    let { name, alcohol, mixer } = this.state;
+    let { name, alcohol, mixer, price } = this.state;
 
     return (
-      <div className="drinkComponent">
-        <ImageUploader
-          withIcon={true}
-          withLabel={false}
-          buttonText='Choose images'
-          onChange={this.onDrop}
-          imgExtension={['.jpg', '.gif', '.png']}
-          maxFileSize={5242880}
-          withPreview={true}
-        />
-        <div>
+      <div className="container border border-primary rounded mt-5 mb-3">
+
+        <div className="row justify-content-center mt-3">
           Cocktail Name:
-          <div className="inputFields">
-            <input value={name}
-              onChange={(e) => {
-                this.setState({ name: e.target.value })
-              }
-              } />
-          </div>
         </div>
-        <div>
+
+        <div className="row justify-content-center">
+          <input value={name}
+             onChange={(e) => this.updateName(this.props.index, e)} />
+        </div>
+
+        <div className="row justify-content-center">
           Alcohol:
-          <div className="inputFields">
-            <input value={alcohol}
-              onChange={(e) => {
-                this.setState({ name: e.target.value })
-              }
-              } />
           </div>
+
+        <div className="row justify-content-center">
+          <input value={alcohol}
+             onChange={(e) => this.updateAlcohol(this.props.index, e)}/>
         </div>
-        <div>
+
+        <div className="row justify-content-center">
           Mixer
-          <div className="inputFields">
-            <input value={mixer}
-              onChange={(e) => {
-                this.setState({ name: e.target.value })
-              }
-              } />
           </div>
+
+        <div className="row justify-content-center">
+          <input value={mixer}
+            onChange={(e) => this.updateMixer(this.props.index, e)}/>
         </div>
-        <div>
+
+        <div className="row justify-content-center">
           Cocktail Price:
-          <div className="inputFields">
-            <input className="input" value={this.state.price}
-              onChange={(e) => this.updatePrice(this.props.index, e)} maxLength="8" />
-          </div>
+        </div>
+
+        <div className="row justify-content-center">
+          <input className="input" value={price}
+            onChange={(e) => this.updatePrice(this.props.index, e)} maxLength="8" />
+        </div>
+
+        <div className="row justify-content-center mt-3 mb-3">
           <h5 style={{ color: 'red', textAlign: 'center', }}>{this.state.error}</h5>
           <button onClick={(e) => this.props.parent.deleteDrink(this.props.index, e)}>Remove</button>
         </div>
+
       </div >
     );
   }

@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
 import './login-signup.css'
 import axios from 'axios';
+// import { connect } from "react-redux";
+// import { setToken } from "./actions/tokenActions";
+
+// const mapStateToProps = state => {
+//     return { token: state.token };
+// };
+// function mapDispatchToProps(dispatch) {
+//     return {
+//         setToken: (token) => dispatch(setToken(token)),
+//     };
+// }
+
 
 class Login extends Component {
 
@@ -27,20 +39,21 @@ class Login extends Component {
     }
 
     submitHandler = (e) => {
-        console.log("Submitted");
-
         let { email, password } = this.state;
-        axios.post('./login', {
+        axios.post('/api/users', {
             email: email,
             password: password,
         })
             .then(res => {
-                if (res.data.valid == true) {
-                    this.setState({
-                        message: null,
-                    })
-                    this.props.setUser(res.data.token);;
-                }
+               // console.log(res.data.token);
+                // if (res.data.valid === true) {
+                //     this.setState({
+                //         message: null,
+                //     })
+                this.props.setToken(res.data.token);
+                this.props.setDisplay(parseInt('2'));
+                    //this.props.setToken(token);
+                //}
             })
             .catch(err => {
                 console.log(err);
@@ -89,3 +102,4 @@ class Login extends Component {
 
 }
 export default Login;
+//export default connect(mapStateToProps, mapDispatchToProps)(Login);
