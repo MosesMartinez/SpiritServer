@@ -61,4 +61,36 @@ app.post('/', function (req, res, next) {
     });
 });
 
+app.post('/logout', (req, res) => {
+  const token = req.body.token;
+
+  let query = `
+    SELECT user_id
+    FROM users
+    WHERE user_token=${token}
+  ;`
+
+  db.any(query)
+    .then(ids => {
+      query = `
+        DELETE FROM tokens
+        WHERE token_user_id=${ids[0].user_id}
+        RETURNING token_push_token
+      ;`
+      db.any(query)
+        .then(pushTokens => {
+          console.log(`Removed ${pushTokens[0].token_push_token}`);
+          res.sendStatus(200);
+        })
+        .catch(err => {
+          console.log(err);
+          res.sendStatus(404);
+        })
+    })
+    .catch(err => {
+      console.log(err);
+      res.sendStatus(404);
+    })
+})
+
 app.listen(5003);
