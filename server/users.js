@@ -67,7 +67,7 @@ app.post('/logout', (req, res) => {
   let query = `
     SELECT user_id
     FROM users
-    WHERE user_token=${token}
+    WHERE user_token='${token}'
   ;`
 
   db.any(query)
