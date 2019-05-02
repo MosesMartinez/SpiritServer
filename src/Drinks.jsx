@@ -10,7 +10,7 @@ class Drinks extends Component {
             error: null,
             isLoaded: false,
             machine: 'Select',
-            alcohols: ['','','',''],
+            alcohols: ['', '', '', ''],
             machineList: [],
             drinkList: [],
             alc1: '',
@@ -48,7 +48,7 @@ class Drinks extends Component {
     }
     generateDrinks = () => {
         if (this.state.machine !== 'Select') {
-            this.setState({isLoaded: !this.state.isLoaded})
+            this.setState({ isLoaded: !this.state.isLoaded })
             axios.get(`/api/cocktails/${this.state.machine}`)
                 .then((res) => {
                     console.log(res.data);
@@ -85,25 +85,32 @@ class Drinks extends Component {
         let { cocktails } = this.state;
         if (cocktails.length > 1) {
             let newList = [{
-                    name: '',
-                    price: 0,
-                    alcohol: {
-                        name: "",
-                        container: 0
-                    },
-                    mixer: {
-                        name: "",
-                        container: 0,
-                        time: 0,
-                    },
-                    image: "",
-                    index: this.state.nextIndex,
+                name: '',
+                price: 0,
+                alcohol: {
+                    name: "",
+                    container: 0
+                },
+                mixer: {
+                    name: "",
+                    container: 0,
+                    time: 0,
+                },
+                image: "",
+                index: this.state.nextIndex,
             }];
             this.setState({
                 cocktails: newList.concat(cocktails),
                 nextIndex: this.state.nextIndex + 1,
             });
         }
+    }
+
+    cancel = () => {
+        this.setState({
+            cocktails: [],
+            isLoaded: false,
+        })
     }
 
     //Todo
@@ -125,9 +132,9 @@ class Drinks extends Component {
     }
     //Todo
     saveMachine = () => {
-        let {cocktails, machine} = this.state;
-        this.setState({isLoaded: !this.state.isLoaded, machine: 'Select'})
-        cocktails.forEach(function(v){ delete v.index });
+        let { cocktails, machine } = this.state;
+        this.setState({ isLoaded: !this.state.isLoaded, machine: 'Select' })
+        cocktails.forEach(function (v) { delete v.index });
         // drinkList.forEach();
         let finishedJSON = [];
         for (let i = 0; i < 4; ++i) {
@@ -137,8 +144,8 @@ class Drinks extends Component {
             cocktails.forEach(cocktail => {
                 if (cocktail.alcohol.name === curObj.alcohol)
                     coc.push(cocktail);
-                if(cocktail.mixer.name === this.state[`mix${i + 1}`])
-                    cocktail.mixer.time = this.state[`time${i+1}`];
+                if (cocktail.mixer.name === this.state[`mix${i + 1}`])
+                    cocktail.mixer.time = this.state[`time${i + 1}`];
             });
             curObj.cocktails = coc;
             finishedJSON.push(curObj);
@@ -149,16 +156,16 @@ class Drinks extends Component {
         axios.post(`/api/cocktails/${machine}`, {
             cocktails: jsonString
         })
-        .then((res)=>{
-            console.log(res.data);
-        })
+            .then((res) => {
+                console.log(res.data);
+            })
     }
     fieldInput = (e) => {
-        
+
         let { machineList } = this.state;
         let machineID = e.target.value;
         if (machineID === 'Select') {
-            this.setState({ 
+            this.setState({
                 machine: 'Select',
                 alc1: '',
                 alc2: '',
@@ -194,68 +201,98 @@ class Drinks extends Component {
     }
     render() {
         const { machineList, cocktails } = this.state;
+
+        let buttons =
+            <div className="row mt-4 justify-content-center">
+                <button onClick={this.cancel} className=" btn btn-primary btn-sm col-sm-1 mr-4">Cancel</button>
+                <button onClick={this.addDrinkComponent} className=" btn btn-primary btn-sm col-sm-1 mr-4">Add Cocktail</button>
+                <button onClick={this.saveMachine} className="btn btn-primary btn-lsm col-sm-1 mr-4">Save</button>
+            </div>
+
+        if (cocktails.length == 0)
+            buttons =
+                <div className="row mt-4 justify-content-center">
+                    <button onClick={this.generateDrinks} className=" btn btn-primary btn-sm col-sm-1 mr-4">Apply</button>
+                </div>
+
+        let alcArray = [];
+        let mixArray = [];
+        for (let i = 1; i <= 4; ++i) {
+            alcArray.push(this.state[`alc${i}`])
+            mixArray.push(this.state[`mix${i}`])
+        }
+        const drinks = cocktails.map((cocktail, i) => {
+            return (
+                <div className="col" key={i}>
+                    <DrinkComponent
+                        name={cocktail.name}
+                        alcohol={cocktail.alcohol.name}
+                        alcArray={alcArray}
+                        mixer={cocktail.mixer.name}
+                        mixArray={mixArray}
+                        price={cocktail.price}
+                        parent={this}
+                        index={cocktail.index}
+                    />
+                </div>
+            )
+        })
+
+
         return (
             <div className="container">
-              <div className="border-bottom border-top mt-3 border-info pt-4 pb-4">
-                <select  onChange={(e) => { this.fieldInput(e) }} value={this.state.machine}>
-                    <option value="Select">Select</option>
-                    {machineList.map((machine) => {
-                        return <option key={machine.id} value={machine.id}>{"Machine " + machine.id}</option>
-                    })}
-                </select>
-                <div className="row">
-                    <div className="col">Alcohol Container 1</div>
-                    <div className="col">Alcohol Container 2</div>
-                    <div className="col">Alcohol Container 3</div>
-                    <div className="col">Alcohol Container 3</div>
+                <div className="border-bottom border-top mt-3 border-info pt-4 pb-4">
+                    <select onChange={(e) => { this.fieldInput(e) }} value={this.state.machine}>
+                        <option value="Select">Select</option>
+                        {machineList.map((machine) => {
+                            return (
+                                <option key={machine.id} value={machine.id}>
+                                    {"Machine " + machine.id}
+                                </option>
+                            );
+                        })}
+                    </select>
+                    <div className="row">
+                        <div className="col">Alcohol Container 1</div>
+                        <div className="col">Alcohol Container 2</div>
+                        <div className="col">Alcohol Container 3</div>
+                        <div className="col">Alcohol Container 3</div>
+                    </div>
+                    <div className="row">
+                        <div className="col"><input value={this.state.alc1} disabled={this.state.isLoaded} name='alc1' onChange={this.inputHandler} /></div>
+                        <div className="col"><input value={this.state.alc2} disabled={this.state.isLoaded} name='alc2' onChange={this.inputHandler} /></div>
+                        <div className="col"><input value={this.state.alc3} disabled={this.state.isLoaded} name='alc3' onChange={this.inputHandler} /></div>
+                        <div className="col"><input value={this.state.alc4} disabled={this.state.isLoaded} name='alc4' onChange={this.inputHandler} /></div>
+                    </div>
+                    <div className="row">
+                        <div className="col">Mixer Container 1</div>
+                        <div className="col">Mixer Container 2</div>
+                        <div className="col">Mixer Container 3</div>
+                        <div className="col">Mixer Container 3</div>
+                    </div>
+                    <div className="row">
+                        <div className="col"><input value={this.state.mix1} disabled={this.state.isLoaded} name='mix1' onChange={this.inputHandler} /></div>
+                        <div className="col"><input value={this.state.mix2} disabled={this.state.isLoaded} name='mix2' onChange={this.inputHandler} /></div>
+                        <div className="col"><input value={this.state.mix3} disabled={this.state.isLoaded} name='mix3' onChange={this.inputHandler} /></div>
+                        <div className="col"><input value={this.state.mix4} disabled={this.state.isLoaded} name='mix4' onChange={this.inputHandler} /></div>
+                    </div>
+                    <div className="row">
+                        <div className="col">Mixer 1 Pour Time</div>
+                        <div className="col">Mixer 2 Pour Time</div>
+                        <div className="col">Mixer 3 Pour Time</div>
+                        <div className="col">Mixer 4 Pour Time</div>
+                    </div>
+                    <div className="row">
+                        <div className="col"><input value={this.state.time1} name='time1' onChange={this.inputHandler} /></div>
+                        <div className="col"><input value={this.state.time2} name='time2' onChange={this.inputHandler} /></div>
+                        <div className="col"><input value={this.state.time3} name='time3' onChange={this.inputHandler} /></div>
+                        <div className="col"><input value={this.state.time4} name='time4' onChange={this.inputHandler} /></div>
+                    </div>
                 </div>
-                <div className="row">
-                    <div className="col"><input value={this.state.alc1} disabled = {this.state.isLoaded} name='alc1' onChange={this.inputHandler} /></div>
-                    <div className="col"><input value={this.state.alc2} disabled = {this.state.isLoaded} name='alc2' onChange={this.inputHandler} /></div>
-                    <div className="col"><input value={this.state.alc3} disabled = {this.state.isLoaded} name='alc3' onChange={this.inputHandler} /></div>
-                    <div className="col"><input value={this.state.alc4} disabled = {this.state.isLoaded} name='alc4' onChange={this.inputHandler} /></div>
-                </div>
-                <div className="row">
-                    <div className="col">Mixer Container 1</div>
-                    <div className="col">Mixer Container 2</div>
-                    <div className="col">Mixer Container 3</div>
-                    <div className="col">Mixer Container 3</div>
-                </div>
-                <div className="row">
-                    <div className="col"><input value={this.state.mix1} disabled = {this.state.isLoaded} name='mix1' onChange={this.inputHandler} /></div>
-                    <div className="col"><input value={this.state.mix2} disabled = {this.state.isLoaded} name='mix2' onChange={this.inputHandler} /></div>
-                    <div className="col"><input value={this.state.mix3} disabled = {this.state.isLoaded} name='mix3' onChange={this.inputHandler} /></div>
-                    <div className="col"><input value={this.state.mix4} disabled = {this.state.isLoaded} name='mix4' onChange={this.inputHandler} /></div>
-                </div>
-                <div className="row">
-                    <div className="col">Mixer 1 Pour Time</div>
-                    <div className="col">Mixer 2 Pour Time</div>
-                    <div className="col">Mixer 3 Pour Time</div>
-                    <div className="col">Mixer 4 Pour Time</div>
-                </div>
-                <div className="row">
-                    <div className="col"><input value={this.state.time1} name='time1' onChange={this.inputHandler} /></div>
-                    <div className="col"><input value={this.state.time2} name='time2' onChange={this.inputHandler} /></div>
-                    <div className="col"><input value={this.state.time3} name='time3' onChange={this.inputHandler} /></div>
-                    <div className="col"><input value={this.state.time4} name='time4' onChange={this.inputHandler} /></div>
-                </div>
-                </div>
-                <div className="row mt-4 justify-content-center">
-                <button onClick={this.generateDrinks} className=" btn btn-primary btn-sm col-sm-1 mr-4">Apply</button>
-                <button onClick={this.saveMachine} className="btn btn-primary btn-lsm col-sm-1 mr-4">Save</button>
-                <button onClick={this.addDrinkComponent} className=" btn btn-primary btn-sm col-sm-1 mr-4">Add Cocktail</button>
-                </div>
+                {buttons}
                 <div>
                     <div className="row">
-                        { this.state.machine !== 'Select' &&
-                            cocktails.map((cocktail) => {
-                                return (
-                                    <div className="col" key={cocktail.index}>
-                                        <DrinkComponent name={cocktail.name} alcohol={cocktail.alcohol.name} mixer={cocktail.mixer.name} price={cocktail.price} parent={this} index={cocktail.index} />
-                                    </div>
-                                )
-                            })
-                        }
+                        {drinks}
                     </div>
                 </div>
             </div>
