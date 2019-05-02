@@ -137,13 +137,16 @@ app.get('/', function (req, res, next) {
 app.get('/:machine', (req, res) => {
     let machine = req.params.machine;
 
-    db.any(`SELECT machine_cocktails
+    db.any(`SELECT machine_cocktails, machine_empty
             FROM machines
             WHERE machine_id=${machine};`)
         .then((cocktail) => {
-            cocktail = cocktail[0].machine_cocktails;
-            cocktail = JSON.parse(cocktail);
-            res.send(cocktail)
+            cocktails = cocktail[0].machine_cocktails;
+            cocktails = JSON.parse(cocktails);
+            for (let i = 0; i < cocktails.length; ++i) {
+                cocktails[i].empty = cocktail[0].machine_empty[i];
+            }
+            res.send(cocktails)
         })
         .catch(err => {
             console.log(err);
