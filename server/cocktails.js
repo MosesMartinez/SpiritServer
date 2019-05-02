@@ -141,12 +141,12 @@ app.get('/:machine', (req, res) => {
             FROM machines
             WHERE machine_id=${machine};`)
         .then((cocktail) => {
-            cocktail = cocktail[0].machine_cocktails;
-            cocktail = JSON.parse(cocktail);
-            for (let i = 0; i < cocktail.length; ++i) {
-                cocktail[i].empty = cocktail[0].machine_empty[i];
+            cocktails = cocktail[0].machine_cocktails;
+            cocktails = JSON.parse(cocktails);
+            for (let i = 0; i < cocktails.length; ++i) {
+                cocktails[i].empty = cocktail[0].machine_empty[i];
             }
-            res.send(cocktail)
+            res.send(cocktails)
         })
         .catch(err => {
             console.log(err);
