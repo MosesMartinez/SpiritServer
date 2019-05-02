@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import "./drinkComponent.css"
-import ImageUploader from 'react-images-upload';
+import "./drinkComponent.css";
 
 class DrinkComponent extends Component {
 
@@ -20,12 +19,12 @@ class DrinkComponent extends Component {
   }
 
   componentWillMount() {
-    let { name, alcohol, mixer } = this.props;
+    let { name, alcohol, mixer, price } = this.props;
 
     if (name) this.setState({ name: name });
     if (alcohol) this.setState({ alcohol: alcohol });
     if (mixer) this.setState({ mixer: mixer });
-
+    if (price) this.setState({ price: price });
   }
 
   onDrop(picture) {
@@ -38,7 +37,7 @@ class DrinkComponent extends Component {
     let { drinkList } = this.props.parent.state;
 
     for (let i = 0; i < drinkList.length; ++i) {
-      if (drinkList[i].index == index) {
+      if (drinkList[i].index === index) {
         index = i;
         break;
       }
@@ -60,55 +59,48 @@ class DrinkComponent extends Component {
     let { name, alcohol, mixer } = this.state;
 
     return (
-      <div className="drinkComponent">
-        <ImageUploader
-          withIcon={true}
-          withLabel={false}
-          buttonText='Choose images'
-          onChange={this.onDrop}
-          imgExtension={['.jpg', '.gif', '.png']}
-          maxFileSize={5242880}
-          withPreview={true}
-        />
-        <div>
+      <div className="container border border-primary rounded mt-5 mb-3">
+        <div className="row justify-content-center mt-3">
           Cocktail Name:
-          <div className="inputFields">
+        </div>
+          <div className="row justify-content-center">
             <input value={name}
               onChange={(e) => {
                 this.setState({ name: e.target.value })
               }
               } />
           </div>
-        </div>
-        <div>
+        <div className="row justify-content-center">
           Alcohol:
-          <div className="inputFields">
+          </div>
+          <div className="row justify-content-center">
             <input value={alcohol}
               onChange={(e) => {
                 this.setState({ name: e.target.value })
               }
               } />
           </div>
-        </div>
-        <div>
+        <div className="row justify-content-center">
           Mixer
-          <div className="inputFields">
+          </div>
+          <div className="row justify-content-center">
             <input value={mixer}
               onChange={(e) => {
                 this.setState({ name: e.target.value })
               }
               } />
           </div>
-        </div>
-        <div>
+        <div className="row justify-content-center">
           Cocktail Price:
-          <div className="inputFields">
+        </div>
+          <div className="row justify-content-center">
             <input className="input" value={this.state.price}
               onChange={(e) => this.updatePrice(this.props.index, e)} maxLength="8" />
           </div>
+          <div className="row justify-content-center mt-3 mb-3">
           <h5 style={{ color: 'red', textAlign: 'center', }}>{this.state.error}</h5>
           <button onClick={(e) => this.props.parent.deleteDrink(this.props.index, e)}>Remove</button>
-        </div>
+          </div>
       </div >
     );
   }

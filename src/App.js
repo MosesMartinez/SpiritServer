@@ -1,19 +1,27 @@
 import React, { Component } from 'react';
-
+//import { connect } from "react-redux";
+//import { setToken } from "./actions/tokenActions";
 import './App.css';
 import Drinks from './Drinks.jsx';
 import Login from './Login.jsx';
 import Signup from './Signup.jsx';
 
-// import axios from 'axios';
-// import './configure.css';
 
+
+// const mapStateToProps = state => {
+//   return {token: state.usertoken.token };
+// }
+
+// function mapDispatchToProps(dispatch) {
+//   return {setToken: (token) => dispatch(setToken(token))};
+// }
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      screen: 0,
+      token: 'e7234b54fb42fc899bdf7397b3579eebe9dfcf1d',
+      screen: 2,
       user: null,
     }
   }
@@ -23,20 +31,33 @@ class App extends Component {
       user: user,
     })
   }
+  setToken = (token) =>{
+    console.log("Token from child: " + token);
+    this.setState({
+      token: token,
+    });
+  }
+  setDisplay = (display) =>{
+    console.log("Display from child: " + display);
+    this.setState({
+      screen: display,
+    })
+  }
 
   render() {
     let { screen } = this.state;
     let display;
 
+    // eslint-disable-next-line default-case
     switch (screen) {
       case 0:
-        display = <Login setUser={this.setUser} />;
+        display = <Login setToken={this.setToken} setDisplay={this.setDisplay} />;
         break;
       case 1:
         display = <Signup />;
         break;
       case 2:
-        display = <Drinks />
+        display = <Drinks userToken={this.state.token}/>
         break;
     }
 
@@ -47,5 +68,5 @@ class App extends Component {
     );
   }
 }
-
 export default App;
+//export default connect(mapStateToProps, mapDispatchToProps)(App);

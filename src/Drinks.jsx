@@ -10,73 +10,111 @@ class Drinks extends Component {
             error: null,
             isLoaded: false,
             machine: 'Select',
-            drinkList: [],
             machineList: [],
+            drinkList: [],
+            alc1: '',
+            alc2: '',
+            alc3: '',
+            alc4: '',
+            mix1: '',
+            mix2: '',
+            mix3: '',
+            mix4: '',
             nextIndex: 0,
+            userToken: null,
+            cocktails: [{
+                alcohol: '',
+                cocktails: [{
+                    name: '',
+                    price: null,
+                    alcohol: {
+                        name: " ",
+                        container: 0
+                    },
+                    mixer: {
+                        name: "",
+                        container: null,
+                        time: null,
+                    },
+                    image: "",
+                }],
+            }],
         }
     }
 
+    componentDidMount() {
+        this.getMachines();
+    }
+    getMachines = () => {
+        let { userToken } = this.props;
+        axios.get(`/api/machines/${userToken}`)
+            .then((res) => {
+                this.setState({
+                    machineList: res.data,
+                });
+                console.log(res.data);
+            })
+    }
     generateDrinks = () => {
-        let { machine } = this.state;
-        let { drinkList } = this.state;
-        console.log(machine);
-        if (machine !== 'Select') {
-            axios.get('/api/cocktails?alcohols=Vodka,Tequila,Gin,Whiskey&mixers=Orange%20Juice,Soda,Tonic,Sprite')
-                .then((results) => {
-                    drinkList = results.data;
-                    drinkList.forEach(drink => {
-                        drink.price = 0;
-                    });
-                    console.log(drinkList);
-                    this.setState({
-                        drinkList: drinkList,
-                        nextIndex: drinkList.length,
-                    })
+        console.log(this.state.machine);
+        if(this.state.machine !== 'Select'){
+        axios.get(`/api/cocktails/${this.state.machine}`)
+            .then((res) => {
+                let drinkList = res.data;
+                this.setState({
+                    cocktails: drinkList,
+                    nextIndex: drinkList.length
                 })
-                .catch((e) => {
-                    console.log(e);
-                })
+            })
+            .catch((e) => {
+                console.log(e);
+            })
         }
     }
     addDrinkComponent = () => {
-        let { drinkList } = this.state;
+        let { cocktails } = this.state;
+
         let newList = [{
-            name: "",
-            alcohols: [
-                ""
-            ],
-            mixers: [
-                ""
-            ],
-            image: null,
-            index: this.state.nextIndex,
-            price: 0,
+            alcohol: '',
+            cocktails: [{
+                name: '',
+                price: null,
+                alcohol: {
+                    name: " ",
+                    container: 0
+                },
+                mixer: {
+                    name: "",
+                    container: null,
+                    time: null,
+                },
+                image: "",
+                index: this.state.nextIndex,
+            }],
         }];
         this.setState({
-            drinkList: newList.concat(drinkList),
+            cocktails: newList.concat(cocktails),
             nextIndex: this.state.nextIndex + 1,
         });
     }
 
     //Todo
     deleteDrink = (index) => {
-        let { drinkList } = this.state;
-        console.log(drinkList);
+        let { cocktails } = this.state;
         console.log("Deleting: " + index);
 
-        for (let i = 0; i < drinkList.length; ++i) {
-            if (drinkList[i].index == index) {
+        for (let i = 0; i < cocktails.length; ++i) {
+            if (cocktails[i].index === index) {
                 index = i;
                 break;
             }
         }
 
-        drinkList.splice(index, 1);
+        cocktails.splice(index, 1);
         this.setState({
-            drinkList: drinkList,
+            cocktails: cocktails,
         })
     }
-
     // updatePrice = (index, e) => {
     //     let { drinkList } = this.state;
 
@@ -95,40 +133,120 @@ class Drinks extends Component {
     // }
     //Todo
     saveMachine = () => {
-        let { drinkList } = this.state;
-        console.log(drinkList);
+        let { machineList } = this.state;
+
+        console.log(machineList[0].alcohol[0].name);
+    }
+    fieldInput = (e) => {
+        let { machineList } = this.state;
+        let machineID = e.target.value;
+        if (machineID === 'Select') {
+            this.setState({
+                machine: 'Select',
+                alc1: '',
+                alc2: '',
+                alc3: '',
+                alc4: '',
+                mix1: '',
+                mix2: '',
+                mix3: '',
+                mix4: '',
+                cocktails: [{
+                    alcohol: '',
+                    cocktails: [{
+                        name: '',
+                        price: null,
+                        alcohol: {
+                            name: " ",
+                            container: 0
+                        },
+                        mixer: {
+                            name: "",
+                            container: null,
+                            time: null,
+                        },
+                        image: "",
+                    }],
+                }],
+            })
+        }
+        else {
+            this.setState({ machine: machineID });
+            for (let i = 0; i < machineList.length; i++) {
+                if (machineList[i].id === parseInt(machineID)) {
+                    for (let j = 0; j < 4; j++) {
+                        this.setState({
+                            [`alc${j + 1}`]: machineList[i].alcohol[j].name,
+                            [`mix${j + 1}`]: machineList[i].mixer[j].name,
+                        })
+                    }
+                }
+            }
+        }
+    }
+    inputHandler = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
+    }
+    displayDrinks = () => {
+
     }
     render() {
-        const { drinkList } = this.state;
+        const { machineList, cocktails } = this.state;
         return (
-            <div>
-                <div>
-                    <select id="Machine" onChange={(e) => {
-                        this.setState({ machine: e.target.value })
-                    }} value={this.state.machine}>
-                        <option value="Select">Select</option>
-                        <option value="Tequila,Vodka">Machine 1</option>
-                        <option value="Gin,Whiskey">Machine 2</option>
-                        <option value="Vodka">Machine 3</option>
-                        <option value="Rum">Machine 4</option>
-                        <option value="Tequila,Vodka,Whiskey,Rum">Machine 5</option>
-                    </select>
-                    {this.state.machine}
-                    <button onClick={this.generateDrinks}>Generate</button>
+            <div className="container">
+                <select onChange={(e) => { this.fieldInput(e) }} value={this.state.machine}>
+                    <option value="Select">Select</option>
+                    {machineList.map((machine) => {
+                        return <option key={machine.id} value={machine.id}>{"Machine " + machine.id}</option>
+                    })}
+                </select>
+                <div className="row">
+                    <div className="col">Alcohol Container 1</div>
+                    <div className="col">Alcohol Container 2</div>
+                    <div className="col">Alcohol Container 3</div>
+                    <div className="col">Alcohol Container 3</div>
                 </div>
-                <div>
-                    <button onClick={this.saveMachine}>Save Machine</button>
-                    <button onClick={this.addDrinkComponent}>Add Drink</button>
+                <div className="row">
+                    <div className="col"><input value={this.state.alc1} name='alc1' onChange={this.inputHandler} /></div>
+                    <div className="col"><input value={this.state.alc2} name='alc2' onChange={this.inputHandler} /></div>
+                    <div className="col"><input value={this.state.alc3} name='alc3' onChange={this.inputHandler} /></div>
+                    <div className="col"><input value={this.state.alc4} name='alc4' onChange={this.inputHandler} /></div>
                 </div>
-                {
-                    <div>
-                        {drinkList.map((drink) => (
-                            <div className="layout" key={drink.index}>
-                                {<DrinkComponent name={drink.name} alcohol={drink.alcohols} mixer={drink.mixers} parent={this} index={drink.index} />}
-                            </div>
-                        ))}
-                    </div>
-                }
+                <div className="row">
+                    <div className="col">Mixer Container 1</div>
+                    <div className="col">Mixer Container 2</div>
+                    <div className="col">Mixer Container 3</div>
+                    <div className="col">Mixer Container 3</div>
+                </div>
+                <div className="row">
+                    <div className="col"><input value={this.state.mix1} name='mix1' onChange={this.inputHandler} /></div>
+                    <div className="col"><input value={this.state.mix2} name='mix2' onChange={this.inputHandler} /></div>
+                    <div className="col"><input value={this.state.mix3} name='mix3' onChange={this.inputHandler} /></div>
+                    <div className="col"><input value={this.state.mix4} name='mix4' onChange={this.inputHandler} /></div>
+                </div>
+                <button onClick={this.generateDrinks}>Apply</button>
+                <div>
+                    {/* {JSON.stringify(cocktails)} */}
+
+                    <button onClick={this.addDrinkComponent}>Add Cocktail</button>
+                    {cocktails.length > 1 &&
+                        cocktails.map((alcohol) => {
+                            return (
+                                <div className ="row">
+                                    {
+                                        alcohol.cocktails.map(cocktail => {
+                                            return (
+                                                <div className="col" key={cocktail.index}>
+                                                    <DrinkComponent name={cocktail.name} alcohol={cocktail.alcohol.name} mixer={cocktail.mixer.name} price={cocktail.price} parent={this} index={cocktail.index} />
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            );
+                        })
+                    }
+                </div>
             </div>
         )
     }
