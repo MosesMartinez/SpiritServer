@@ -20,8 +20,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      token: 'e7234b54fb42fc899bdf7397b3579eebe9dfcf1d',
-      screen: 2,
+      token: '',
+      screen: 0,
       user: null,
     }
   }

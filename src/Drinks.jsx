@@ -35,6 +35,7 @@ class Drinks extends Component {
     componentDidMount() {
         this.getMachines();
     }
+
     getMachines = () => {
         let { userToken } = this.props;
         axios.get(`/api/machines/${userToken}`)
@@ -125,7 +126,7 @@ class Drinks extends Component {
     //Todo
     saveMachine = () => {
         let {cocktails, machine} = this.state;
-        this.setState({isLoaded: !this.state.isLoaded})
+        this.setState({isLoaded: !this.state.isLoaded, machine: 'Select'})
         cocktails.forEach(function(v){ delete v.index });
         // drinkList.forEach();
         let finishedJSON = [];
@@ -175,7 +176,7 @@ class Drinks extends Component {
             })
         }
         else {
-            this.setState({ machine: machineID });
+            this.setState({ machine: machineID, cocktails: [] });
             for (let i = 0; i < machineList.length; i++) {
                 if (machineList[i].id === parseInt(machineID)) {
                     for (let j = 0; j < 4; j++) {
@@ -191,15 +192,12 @@ class Drinks extends Component {
     inputHandler = (e) => {
         this.setState({ [e.target.name]: e.target.value });
     }
-    displayDrinks = () => {
-
-    }
     render() {
         const { machineList, cocktails } = this.state;
         return (
             <div className="container">
               <div className="border-bottom border-top mt-3 border-info pt-4 pb-4">
-                <select onChange={(e) => { this.fieldInput(e) }} value={this.state.machine}>
+                <select  onChange={(e) => { this.fieldInput(e) }} value={this.state.machine}>
                     <option value="Select">Select</option>
                     {machineList.map((machine) => {
                         return <option key={machine.id} value={machine.id}>{"Machine " + machine.id}</option>
