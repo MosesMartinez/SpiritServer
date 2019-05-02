@@ -20,25 +20,13 @@ class Drinks extends Component {
             mix2: '',
             mix3: '',
             mix4: '',
+            time1: '',
+            time2: '',
+            time3: '',
+            time4: '',
             nextIndex: 0,
             userToken: null,
-            cocktails: [{
-                alcohol: '',
-                cocktails: [{
-                    name: '',
-                    price: null,
-                    alcohol: {
-                        name: " ",
-                        container: 0
-                    },
-                    mixer: {
-                        name: "",
-                        container: null,
-                        time: null,
-                    },
-                    image: "",
-                }],
-            }],
+            cocktails: [],
         }
     }
 
@@ -56,46 +44,62 @@ class Drinks extends Component {
             })
     }
     generateDrinks = () => {
-        console.log(this.state.machine);
-        if(this.state.machine !== 'Select'){
-        axios.get(`/api/cocktails/${this.state.machine}`)
-            .then((res) => {
-                let drinkList = res.data;
-                this.setState({
-                    cocktails: drinkList,
-                    nextIndex: drinkList.length
+        if (this.state.machine !== 'Select') {
+            axios.get(`/api/cocktails/${this.state.machine}`)
+                .then((res) => {
+                    console.log(res.data);
+                    let drink = res.data;
+                    let index = 0;
+                    let cocktails = []
+                    for (let i = 0; i < drink.length; i++) {
+                        for (let j = 0; j < drink[i].cocktails.length; j++) {
+                            cocktails.push(drink[i].cocktails[j]);
+                            this.setState({
+                                [`time${j + 1}`]: drink[i].cocktails[j].mixer.time,
+                            });
+                        }
+                    }
+                    cocktails.forEach(cocktail => {
+                        cocktail.index = index++;
+                    });
+                    // let {cocktails} = this.state;
+                    // for(let i = 0; i<drinks.length; i++){
+
+                    // }
+                    this.setState({
+                        cocktails: cocktails,
+                        nextIndex: cocktails.length,
+                        drinkList: res.data,
+                    })
                 })
-            })
-            .catch((e) => {
-                console.log(e);
-            })
+                .catch((e) => {
+                    console.log(e);
+                })
         }
     }
     addDrinkComponent = () => {
         let { cocktails } = this.state;
-
-        let newList = [{
-            alcohol: '',
-            cocktails: [{
-                name: '',
-                price: null,
-                alcohol: {
-                    name: " ",
-                    container: 0
-                },
-                mixer: {
-                    name: "",
-                    container: null,
-                    time: null,
-                },
-                image: "",
-                index: this.state.nextIndex,
-            }],
-        }];
-        this.setState({
-            cocktails: newList.concat(cocktails),
-            nextIndex: this.state.nextIndex + 1,
-        });
+        if (cocktails.length > 1) {
+            let newList = [{
+                    name: '',
+                    price: 0,
+                    alcohol: {
+                        name: " ",
+                        container: 0
+                    },
+                    mixer: {
+                        name: "",
+                        container: 0,
+                        time: 0,
+                    },
+                    image: "",
+                    index: this.state.nextIndex,
+            }];
+            this.setState({
+                cocktails: newList.concat(cocktails),
+                nextIndex: this.state.nextIndex + 1,
+            });
+        }
     }
 
     //Todo
@@ -115,27 +119,30 @@ class Drinks extends Component {
             cocktails: cocktails,
         })
     }
-    // updatePrice = (index, e) => {
-    //     let { drinkList } = this.state;
-
-    //     for (let i = 0; i < drinkList.length; ++i) {
-    //         if (drinkList[i].index == index) {
-    //             index = i;
-    //             break;
-    //         }
-    //     }
-
-    //     console.log(drinkList[index]);
-
-    //     this.setState({
-    //         drinkList: drinkList,
-    //     })
-    // }
     //Todo
     saveMachine = () => {
-        let { machineList } = this.state;
+        let {cocktails, machine} = this.state;
+        cocktails.forEach(function(v){ delete v.index });
+        // drinkList.forEach();
+        let finishedJSON = [];
+        for (let i = 0; i < 4; ++i) {
+            let curObj = {};
+            curObj.alcohol = this.state[`alc${i + 1}`];
+            let coc = [];
+            cocktails.forEach(cocktail => {
+                if (cocktail.alcohol.name === curObj.alcohol)
+                    coc.push(cocktail);
+            });
+            curObj.cocktails = coc;
+            finishedJSON.push(curObj);
+        }
+        console.log(finishedJSON);
+        const jsonString = JSON.stringify(finishedJSON);
 
-        console.log(machineList[0].alcohol[0].name);
+        axios.post(`/api/machine/${machine + jsonString}`)
+        .then((res)=>{
+            console.log(res.data);
+        })
     }
     fieldInput = (e) => {
         let { machineList } = this.state;
@@ -151,6 +158,10 @@ class Drinks extends Component {
                 mix2: '',
                 mix3: '',
                 mix4: '',
+                time1: '',
+                time2: '',
+                time3: '',
+                time4: '',
                 cocktails: [{
                     alcohol: '',
                     cocktails: [{
@@ -168,6 +179,7 @@ class Drinks extends Component {
                         image: "",
                     }],
                 }],
+                nextIndex: 0,
             })
         }
         else {
@@ -194,6 +206,7 @@ class Drinks extends Component {
         const { machineList, cocktails } = this.state;
         return (
             <div className="container">
+              <div className="border-bottom border-top mt-3 border-info pt-4 pb-4">
                 <select onChange={(e) => { this.fieldInput(e) }} value={this.state.machine}>
                     <option value="Select">Select</option>
                     {machineList.map((machine) => {
@@ -224,28 +237,36 @@ class Drinks extends Component {
                     <div className="col"><input value={this.state.mix3} name='mix3' onChange={this.inputHandler} /></div>
                     <div className="col"><input value={this.state.mix4} name='mix4' onChange={this.inputHandler} /></div>
                 </div>
-                <button onClick={this.generateDrinks}>Apply</button>
+                <div className="row">
+                    <div className="col">Mixer 1 Pour Time</div>
+                    <div className="col">Mixer 2 Pour Time</div>
+                    <div className="col">Mixer 3 Pour Time</div>
+                    <div className="col">Mixer 4 Pour Time</div>
+                </div>
+                <div className="row">
+                    <div className="col"><input value={this.state.time1} name='time1' onChange={this.inputHandler} /></div>
+                    <div className="col"><input value={this.state.time2} name='time2' onChange={this.inputHandler} /></div>
+                    <div className="col"><input value={this.state.time3} name='time3' onChange={this.inputHandler} /></div>
+                    <div className="col"><input value={this.state.time4} name='time4' onChange={this.inputHandler} /></div>
+                </div>
+                </div>
+                <div className="row mt-4 justify-content-center">
+                <button onClick={this.generateDrinks} className=" btn btn-primary btn-sm col-sm-1 mr-4">Apply</button>
+                <button onClick={this.saveMachine} className="btn btn-primary btn-lsm col-sm-1 mr-4">Save</button>
+                <button onClick={this.addDrinkComponent} className=" btn btn-primary btn-sm col-sm-1 mr-4">Add Cocktail</button>
+                </div>
                 <div>
-                    {/* {JSON.stringify(cocktails)} */}
-
-                    <button onClick={this.addDrinkComponent}>Add Cocktail</button>
-                    {cocktails.length > 1 &&
-                        cocktails.map((alcohol) => {
-                            return (
-                                <div className ="row">
-                                    {
-                                        alcohol.cocktails.map(cocktail => {
-                                            return (
-                                                <div className="col" key={cocktail.index}>
-                                                    <DrinkComponent name={cocktail.name} alcohol={cocktail.alcohol.name} mixer={cocktail.mixer.name} price={cocktail.price} parent={this} index={cocktail.index} />
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                </div>
-                            );
-                        })
-                    }
+                    <div className="row">
+                        {cocktails.length > 0 &&
+                            cocktails.map((cocktail) => {
+                                return (
+                                    <div className="col" key={cocktail.index}>
+                                        <DrinkComponent name={cocktail.name} alcohol={cocktail.alcohol.name} mixer={cocktail.mixer.name} price={cocktail.price} parent={this} index={cocktail.index} />
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
                 </div>
             </div>
         )
