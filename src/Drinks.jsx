@@ -10,6 +10,7 @@ class Drinks extends Component {
             error: null,
             isLoaded: false,
             machine: 'Select',
+            alcohols: ['','','',''],
             machineList: [],
             drinkList: [],
             alc1: '',
@@ -27,6 +28,7 @@ class Drinks extends Component {
             nextIndex: 0,
             userToken: null,
             cocktails: [],
+
         }
     }
 
@@ -45,6 +47,7 @@ class Drinks extends Component {
     }
     generateDrinks = () => {
         if (this.state.machine !== 'Select') {
+            this.setState({isLoaded: !this.state.isLoaded})
             axios.get(`/api/cocktails/${this.state.machine}`)
                 .then((res) => {
                     console.log(res.data);
@@ -84,7 +87,7 @@ class Drinks extends Component {
                     name: '',
                     price: 0,
                     alcohol: {
-                        name: " ",
+                        name: "",
                         container: 0
                     },
                     mixer: {
@@ -122,6 +125,7 @@ class Drinks extends Component {
     //Todo
     saveMachine = () => {
         let {cocktails, machine} = this.state;
+        this.setState({isLoaded: !this.state.isLoaded})
         cocktails.forEach(function(v){ delete v.index });
         // drinkList.forEach();
         let finishedJSON = [];
@@ -132,6 +136,8 @@ class Drinks extends Component {
             cocktails.forEach(cocktail => {
                 if (cocktail.alcohol.name === curObj.alcohol)
                     coc.push(cocktail);
+                if(cocktail.mixer.name === this.state[`mix${i + 1}`])
+                    cocktail.mixer.time = this.state[`time${i+1}`];
             });
             curObj.cocktails = coc;
             finishedJSON.push(curObj);
@@ -139,16 +145,19 @@ class Drinks extends Component {
         console.log(finishedJSON);
         const jsonString = JSON.stringify(finishedJSON);
 
-        axios.post(`/api/machine/${machine + jsonString}`)
+        axios.post(`/api/cocktails/${machine}`, {
+            cocktails: jsonString
+        })
         .then((res)=>{
             console.log(res.data);
         })
     }
     fieldInput = (e) => {
+        
         let { machineList } = this.state;
         let machineID = e.target.value;
         if (machineID === 'Select') {
-            this.setState({
+            this.setState({ 
                 machine: 'Select',
                 alc1: '',
                 alc2: '',
@@ -162,23 +171,6 @@ class Drinks extends Component {
                 time2: '',
                 time3: '',
                 time4: '',
-                cocktails: [{
-                    alcohol: '',
-                    cocktails: [{
-                        name: '',
-                        price: null,
-                        alcohol: {
-                            name: " ",
-                            container: 0
-                        },
-                        mixer: {
-                            name: "",
-                            container: null,
-                            time: null,
-                        },
-                        image: "",
-                    }],
-                }],
                 nextIndex: 0,
             })
         }
@@ -220,10 +212,10 @@ class Drinks extends Component {
                     <div className="col">Alcohol Container 3</div>
                 </div>
                 <div className="row">
-                    <div className="col"><input value={this.state.alc1} name='alc1' onChange={this.inputHandler} /></div>
-                    <div className="col"><input value={this.state.alc2} name='alc2' onChange={this.inputHandler} /></div>
-                    <div className="col"><input value={this.state.alc3} name='alc3' onChange={this.inputHandler} /></div>
-                    <div className="col"><input value={this.state.alc4} name='alc4' onChange={this.inputHandler} /></div>
+                    <div className="col"><input value={this.state.alc1} disabled = {this.state.isLoaded} name='alc1' onChange={this.inputHandler} /></div>
+                    <div className="col"><input value={this.state.alc2} disabled = {this.state.isLoaded} name='alc2' onChange={this.inputHandler} /></div>
+                    <div className="col"><input value={this.state.alc3} disabled = {this.state.isLoaded} name='alc3' onChange={this.inputHandler} /></div>
+                    <div className="col"><input value={this.state.alc4} disabled = {this.state.isLoaded} name='alc4' onChange={this.inputHandler} /></div>
                 </div>
                 <div className="row">
                     <div className="col">Mixer Container 1</div>
@@ -232,10 +224,10 @@ class Drinks extends Component {
                     <div className="col">Mixer Container 3</div>
                 </div>
                 <div className="row">
-                    <div className="col"><input value={this.state.mix1} name='mix1' onChange={this.inputHandler} /></div>
-                    <div className="col"><input value={this.state.mix2} name='mix2' onChange={this.inputHandler} /></div>
-                    <div className="col"><input value={this.state.mix3} name='mix3' onChange={this.inputHandler} /></div>
-                    <div className="col"><input value={this.state.mix4} name='mix4' onChange={this.inputHandler} /></div>
+                    <div className="col"><input value={this.state.mix1} disabled = {this.state.isLoaded} name='mix1' onChange={this.inputHandler} /></div>
+                    <div className="col"><input value={this.state.mix2} disabled = {this.state.isLoaded} name='mix2' onChange={this.inputHandler} /></div>
+                    <div className="col"><input value={this.state.mix3} disabled = {this.state.isLoaded} name='mix3' onChange={this.inputHandler} /></div>
+                    <div className="col"><input value={this.state.mix4} disabled = {this.state.isLoaded} name='mix4' onChange={this.inputHandler} /></div>
                 </div>
                 <div className="row">
                     <div className="col">Mixer 1 Pour Time</div>
@@ -257,7 +249,7 @@ class Drinks extends Component {
                 </div>
                 <div>
                     <div className="row">
-                        {cocktails.length > 0 &&
+                        { this.state.machine !== 'Select' &&
                             cocktails.map((cocktail) => {
                                 return (
                                     <div className="col" key={cocktail.index}>

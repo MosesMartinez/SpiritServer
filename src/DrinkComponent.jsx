@@ -57,7 +57,7 @@ class DrinkComponent extends Component {
     }
     cocktails[index].alcohol.name = e.target.value;
     this.props.parent.setState({ cocktails: cocktails })
-    this.setState({ alcohol: cocktails[index].alcohol.namee })
+    this.setState({ alcohol: cocktails[index].alcohol.name })
   }
   updateMixer = (index, e) =>{
     let { cocktails } = this.props.parent.state;
@@ -70,7 +70,7 @@ class DrinkComponent extends Component {
     }
     cocktails[index].mixer.name = e.target.value;
     this.props.parent.setState({ cocktails: cocktails })
-    this.setState({ mixer: cocktails[index].mixer.namee })
+    this.setState({ mixer: cocktails[index].mixer.name })
   }
   updatePrice = (index, e) => {
     let { cocktails } = this.props.parent.state;
@@ -88,7 +88,7 @@ class DrinkComponent extends Component {
     // else
     //   this.setState({ error: "" });
 
-    cocktails[index].price = e.target.value;
+    cocktails[index].price = parseInt(e.target.value);
 
     this.props.parent.setState({ cocktails: cocktails })
     this.setState({ price: cocktails[index].price })
