@@ -26,6 +26,18 @@ class Login extends Component {
 
     }
 
+    setMessage = (message) => {
+        this.setState({
+            message: message,
+        });
+
+        setTimeout(() => {
+            this.setState({
+                message: null,
+            });
+        }, 3000)
+    }
+
     emailHandler = (e) => {
         this.setState({
             email: e.target.value,
@@ -45,18 +57,12 @@ class Login extends Component {
             password: password,
         })
             .then(res => {
-               // console.log(res.data.token);
-                // if (res.data.valid === true) {
-                //     this.setState({
-                //         message: null,
-                //     })
                 this.props.setToken(res.data.token);
                 this.props.setDisplay(parseInt('2'));
-                    //this.props.setToken(token);
-                //}
             })
             .catch(err => {
                 console.log(err);
+                this.setMessage('Invalid email/password');
             });
 
         e.preventDefault();
@@ -94,6 +100,11 @@ class Login extends Component {
                 <div className="row mt-2">
                     <div className="col-sm">
                         <button type="submit" onClick={this.submitHandler} className="btn btn-primary btn-lg float-right">Login</button>
+                    </div>
+                </div>
+                <div className="row mt-2">
+                    <div className="col-sm mt-3 text-danger h2 text-center">
+                        {this.state.message}
                     </div>
                 </div>
             </div>

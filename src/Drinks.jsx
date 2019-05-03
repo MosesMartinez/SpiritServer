@@ -25,15 +25,26 @@ class Drinks extends Component {
             time2: '',
             time3: '',
             time4: '',
-            nextIndex: 0,
             userToken: null,
             cocktails: [],
-
+            message: null,
         }
     }
 
     componentDidMount() {
         this.getMachines();
+    }
+
+    setMessage = (message) => {
+        this.setState({
+            message: message,
+        });
+
+        setTimeout(() => {
+            this.setState({
+                message: null,
+            });
+        }, 3000)
     }
 
     getMachines = () => {
@@ -64,7 +75,8 @@ class Drinks extends Component {
                         }
                     }
                     cocktails.forEach(cocktail => {
-                        cocktail.index = index++;
+                        // cocktail.index = index++;
+                        cocktail.index = Math.floor(Math.random() * 500000);
                     });
                     // let {cocktails} = this.state;
                     // for(let i = 0; i<drinks.length; i++){
@@ -72,7 +84,6 @@ class Drinks extends Component {
                     // }
                     this.setState({
                         cocktails: cocktails,
-                        nextIndex: cocktails.length,
                         drinkList: res.data,
                     })
                 })
@@ -82,26 +93,25 @@ class Drinks extends Component {
         }
     }
     addDrinkComponent = () => {
-        let { cocktails } = this.state;
+        let { cocktails, alc1, mix1 } = this.state;
         if (cocktails.length > 1) {
             let newList = [{
                 name: '',
                 price: 0,
                 alcohol: {
-                    name: "",
+                    name: alc1,
                     container: 0
                 },
                 mixer: {
-                    name: "",
+                    name: mix1,
                     container: 0,
                     time: 0,
                 },
-                image: "",
-                index: this.state.nextIndex,
+                image: null,
+                index: Math.floor(Math.random() * 500000),
             }];
             this.setState({
                 cocktails: newList.concat(cocktails),
-                nextIndex: this.state.nextIndex + 1,
             });
         }
     }
@@ -110,6 +120,10 @@ class Drinks extends Component {
         this.setState({
             cocktails: [],
             isLoaded: false,
+            time1: '',
+            time2: '',
+            time3: '',
+            time4: '',
         })
     }
 
@@ -117,15 +131,17 @@ class Drinks extends Component {
     deleteDrink = (index) => {
         let { cocktails } = this.state;
         console.log("Deleting: " + index);
+        let deleteIndex = 0;
 
         for (let i = 0; i < cocktails.length; ++i) {
             if (cocktails[i].index === index) {
-                index = i;
+                console.log('Found drink at ' + i);
+                deleteIndex = i;
                 break;
             }
         }
 
-        cocktails.splice(index, 1);
+        cocktails.splice(deleteIndex, 1);
         this.setState({
             cocktails: cocktails,
         })
@@ -133,7 +149,8 @@ class Drinks extends Component {
     //Todo
     saveMachine = () => {
         let { cocktails, machine } = this.state;
-        this.setState({ isLoaded: !this.state.isLoaded, machine: 'Select' })
+        // this.setState({ isLoaded: !this.state.isLoaded, machine: 'Select' })
+        console.log(cocktails);
         cocktails.forEach(function (v) { delete v.index });
         // drinkList.forEach();
         let finishedJSON = [];
@@ -158,8 +175,12 @@ class Drinks extends Component {
         })
             .then((res) => {
                 console.log(res.data);
+                this.cancel();
+                this.setMessage('Cocktails added');
             })
     }
+
+
     fieldInput = (e) => {
 
         let { machineList } = this.state;
@@ -179,7 +200,6 @@ class Drinks extends Component {
                 time2: '',
                 time3: '',
                 time4: '',
-                nextIndex: 0,
             })
         }
         else {
@@ -223,7 +243,7 @@ class Drinks extends Component {
         }
         const drinks = cocktails.map((cocktail, i) => {
             return (
-                <div className="col" key={i}>
+                <div className="col" key={cocktail.index}>
                     <DrinkComponent
                         name={cocktail.name}
                         alcohol={cocktail.alcohol.name}
@@ -231,6 +251,7 @@ class Drinks extends Component {
                         mixer={cocktail.mixer.name}
                         mixArray={mixArray}
                         price={cocktail.price}
+                        image={cocktail.image}
                         parent={this}
                         index={cocktail.index}
                     />
@@ -283,10 +304,15 @@ class Drinks extends Component {
                         <div className="col">Mixer 4 Pour Time</div>
                     </div>
                     <div className="row">
-                        <div className="col"><input value={this.state.time1} name='time1' onChange={this.inputHandler} /></div>
-                        <div className="col"><input value={this.state.time2} name='time2' onChange={this.inputHandler} /></div>
-                        <div className="col"><input value={this.state.time3} name='time3' onChange={this.inputHandler} /></div>
-                        <div className="col"><input value={this.state.time4} name='time4' onChange={this.inputHandler} /></div>
+                        <div className="col"><input value={this.state.time1} disabled={!this.state.isLoaded} name='time1' onChange={this.inputHandler} /></div>
+                        <div className="col"><input value={this.state.time2} disabled={!this.state.isLoaded} name='time2' onChange={this.inputHandler} /></div>
+                        <div className="col"><input value={this.state.time3} disabled={!this.state.isLoaded} name='time3' onChange={this.inputHandler} /></div>
+                        <div className="col"><input value={this.state.time4} disabled={!this.state.isLoaded} name='time4' onChange={this.inputHandler} /></div>
+                    </div>
+                    <div className="row mt-3">
+                        <div className="col h1 text-danger text-center">
+                            {this.state.message}
+                        </div>
                     </div>
                 </div>
                 {buttons}

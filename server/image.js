@@ -1,27 +1,53 @@
 const express = require('express');
 const app = express();
-const fileUpload = require('express-fileupload');
 const im = require('imagemagick');
-const multer = require('multer')
-const upload = multer({ dest: 'uploads/' })
-const image2base64 = require('image-to-base64');
-const base64Img = require('base64-img');
+const bodyParser = require('body-parser');
+const formidable = require('formidable');
+const tokenizer = require('object-hash');
+
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 // app.use(fileUpload({
 //     useTempFiles: true,
 //     tempFileDir: '/tmp/'
 // }));
 
-app.post('/', upload.single('img'), (req, res) => {
+app.post('/', (req, res) => {
 
-    let { filename } = req.file;
+    // let filename = null;
+    // let { img } = req.body
+    // console.log(img)
 
-    im.convert(['-background', 'white', '-gravity', 'center',
-        `uploads/${filename}`, '-resize', '200x200', '-extent', '200x200', 'uploads/thumb.jpg'],
-        (err, result) => {
-            let data = base64Img.base64Sync(`uploads/thumb.jpg`);
-            res.send(data);
-        })
+    var form = new formidable.IncomingForm();
+
+    form.parse(req, function (err, fields, files) {
+        // res.writeHead(200, { 'content-type': 'text/plain' });
+        // res.write('received upload:\n\n');
+        // res.end(util.inspect({ fields: fields, files: files }));
+        // console.log(files);
+
+        const filename = files.image.path;
+        const newFilename = tokenizer(Date.now());
+
+        im.convert(['-background', 'white', '-gravity', 'center',
+            filename, '-resize', '200x200', '-extent', '200x200',
+            `../build/images/uploads/${newFilename}.jpg`],
+            (err, result) => {
+                if (err) {
+                    res.send(err);
+                    console.log(err);
+                }
+                else {
+                    res.send(`/images/uploads/${newFilename}.jpg`);
+                }
+            })
+
+        // res.send(files);
+    });
+
+
 
 
 
