@@ -53,8 +53,11 @@ app.get('/:token', (req, res) => {
 
 app.post('/:machine', (req, res) => {
     const machine = req.params.machine;
-    const a = req.body.alcohol.json();
-    const m = req.body.mixer.json();
+    const a = JSON.parse(req.body.alcohol);
+    const m = JSON.parse(req.body.mixer);
+
+    console.log(a);
+    console.log(m);
 
     const query = `
         UPDATE machines
@@ -64,9 +67,9 @@ app.post('/:machine', (req, res) => {
 	    WHERE machine_id=${machine};
     `;
 
-    db.all(query)
-        .then(res => {
-            console.log(res);
+    db.any(query)
+        .then(result => {
+            console.log(result);
             res.send('Updated machines');
         })
         .catch(err => {

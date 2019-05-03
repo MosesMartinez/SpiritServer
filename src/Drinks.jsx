@@ -157,8 +157,8 @@ class Drinks extends Component {
         // drinkList.forEach();
         let finishedJSON = [];
         for (let i = 0; i < 4; ++i) {
-            alcoholList.push(`alc${i + 1}`);
-            mixerList.push(`mix${i + 1}`)
+            alcoholList.push(this.state[`alc${i + 1}`]);
+            mixerList.push(this.state[`mix${i + 1}`])
             let curObj = {};
             curObj.alcohol = this.state[`alc${i + 1}`];
             let coc = [];
@@ -167,7 +167,7 @@ class Drinks extends Component {
                 if (cocktail.alcohol.name === curObj.alcohol)
                     coc.push(cocktail);
                 if (cocktail.mixer.name === this.state[`mix${i + 1}`])
-                    cocktail.mixer.time = this.state[`time${i + 1}`];
+                    cocktail.mixer.time = parseFloat(this.state[`time${i + 1}`]);
             });
             curObj.cocktails = coc;
             finishedJSON.push(curObj);
@@ -176,6 +176,8 @@ class Drinks extends Component {
         const jsonString = JSON.stringify(finishedJSON);
         const alcString = JSON.stringify(alcoholList);
         const mixString = JSON.stringify(mixerList);
+        console.log(alcString);
+        console.log(mixString);
         axios.post(`/api/cocktails/${machine}`, {
             cocktails: jsonString
         })
@@ -183,14 +185,18 @@ class Drinks extends Component {
                 console.log(res.data);
                 this.cancel();
                 this.setMessage('Cocktails added');
+
+                axios.post(`/api/machines/${machine}`, {
+                    alcohol: alcString,
+                    mixer: mixString,
+                })
+                    .then((res) => {
+                        console.log(res.data);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
             })
-        axios.post(`/api/machine/${machine}`,{
-            alcohol: alcString,
-            mixer: mixerList,
-        })
-        .then((res) => {
-            console.log(res.data);
-        })
     }
 
 
@@ -216,6 +222,7 @@ class Drinks extends Component {
             })
         }
         else {
+            this.getMachines();
             this.setState({ machine: machineID, cocktails: [] });
             for (let i = 0; i < machineList.length; i++) {
                 if (machineList[i].id === parseInt(machineID)) {
@@ -226,9 +233,11 @@ class Drinks extends Component {
                         })
                     }
                 }
+
             }
         }
     }
+
     inputHandler = (e) => {
         this.setState({ [e.target.name]: e.target.value });
     }
