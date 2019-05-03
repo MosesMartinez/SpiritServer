@@ -22,6 +22,23 @@ app.post('/', (req, res) => {
         })
 })
 
+app.get('/', (req, res) => {
+    const token = hash(Date.now());
+
+    db.any(`INSERT INTO wallets(
+        token, money)
+        VALUES ('${token}', ${10.00}) RETURNING token;
+        `)
+        .then(token => {
+            console.log(token[0]);
+            res.send(token[0]);
+        })
+        .catch(err => {
+            console.log(err);
+            res.send(err);
+        })
+})
+
 // Update balance
 app.post('/:token/:newBalance', (req, res) => {
     const token = req.params.token;
