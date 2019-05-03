@@ -1,6 +1,9 @@
 let app = require('express')();
-// let bodyParser = require('body-parser');
+let bodyParser = require('body-parser');
 let db = require('../db');
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json());
 
 app.get('/:token', (req, res) => {
     const token = req.params.token;
@@ -45,6 +48,30 @@ app.get('/:token', (req, res) => {
         .catch(err => {
             console.log(err);
             res.send(err);
+        })
+});
+
+app.post('/:machine', (req, res) => {
+    const machine = req.params.machine;
+    const a = req.body.alcohol.json();
+    const m = req.body.mixer.json();
+
+    const query = `
+        UPDATE machines
+        SET
+            machine_alcohol=ARRAY['${a[0]}','${a[1]}','${a[2]}','${a[3]}'],
+            machine_mixer=ARRAY['${m[0]}','${m[1]}','${m[2]}','${m[3]}']
+	    WHERE machine_id=${machine};
+    `;
+
+    db.all(query)
+        .then(res => {
+            console.log(res);
+            res.send('Updated machines');
+        })
+        .catch(err => {
+            console.log(err);
+            res.sendStatus(404);
         })
 });
 

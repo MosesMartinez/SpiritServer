@@ -21,10 +21,10 @@ class Drinks extends Component {
             mix2: '',
             mix3: '',
             mix4: '',
-            time1: '',
-            time2: '',
-            time3: '',
-            time4: '',
+            time1: 5.0,
+            time2: 5.0,
+            time3: 5.0,
+            time4: 5.0,
             userToken: null,
             cocktails: [],
             message: null,
@@ -159,6 +159,7 @@ class Drinks extends Component {
             curObj.alcohol = this.state[`alc${i + 1}`];
             let coc = [];
             cocktails.forEach(cocktail => {
+                console.log(cocktail.mixer.name);
                 if (cocktail.alcohol.name === curObj.alcohol)
                     coc.push(cocktail);
                 if (cocktail.mixer.name === this.state[`mix${i + 1}`])
