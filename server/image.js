@@ -40,7 +40,7 @@ app.post('/', (req, res) => {
                     console.log(err);
                 }
                 else {
-                    res.send(`/images/uploads/${newFilename}.jpg`);
+                    res.send(`http://spirit-machine.com/images/uploads/${newFilename}.jpg`);
                 }
             })
 

@@ -11,10 +11,10 @@ app.use('/api/users', proxy('http://localhost:5003'));
 app.use('/api/signup', proxy('http://localhost:5004'));
 app.use('/api/notify', proxy('http://localhost:5005'));
 app.use('/api/image', proxy('http://localhost:5006'));
-app.use('/', proxy('http://localhost:3000'));
+// app.use('/', proxy('http://localhost:3000'));
 
-// app.get('/', (req, res) => {
-//     app.render('index.html');
-// })
+app.get('/', (req, res) => {
+    app.render('index.html');
+})
 
 app.listen(80);
