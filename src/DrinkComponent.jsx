@@ -97,6 +97,7 @@ class DrinkComponent extends Component {
       }
     }
     cocktails[index].mixer.name = e.target.value;
+    cocktails[index].mixer.container = index
     this.props.parent.setState({ cocktails: cocktails })
     this.setState({ mixer: cocktails[index].mixer.name })
   }

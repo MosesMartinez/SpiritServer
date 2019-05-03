@@ -164,10 +164,14 @@ class Drinks extends Component {
             let coc = [];
             cocktails.forEach(cocktail => {
                 console.log(cocktail.mixer.name);
-                if (cocktail.alcohol.name === curObj.alcohol)
+                if (cocktail.alcohol.name === curObj.alcohol) {
                     coc.push(cocktail);
-                if (cocktail.mixer.name === this.state[`mix${i + 1}`])
+                    cocktail.alcohol.container = i;
+                }
+                if (cocktail.mixer.name === this.state[`mix${i + 1}`]) {
                     cocktail.mixer.time = parseFloat(this.state[`time${i + 1}`]);
+                    cocktail.mixer.container = i;
+                }
             });
             curObj.cocktails = coc;
             finishedJSON.push(curObj);
