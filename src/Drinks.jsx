@@ -152,9 +152,13 @@ class Drinks extends Component {
         // this.setState({ isLoaded: !this.state.isLoaded, machine: 'Select' })
         console.log(cocktails);
         cocktails.forEach(function (v) { delete v.index });
+        let alcoholList = [];
+        let mixerList = [];
         // drinkList.forEach();
         let finishedJSON = [];
         for (let i = 0; i < 4; ++i) {
+            alcoholList.push(`alc${i + 1}`);
+            mixerList.push(`mix${i + 1}`)
             let curObj = {};
             curObj.alcohol = this.state[`alc${i + 1}`];
             let coc = [];
@@ -170,7 +174,8 @@ class Drinks extends Component {
         }
         console.log(finishedJSON);
         const jsonString = JSON.stringify(finishedJSON);
-
+        const alcString = JSON.stringify(alcoholList);
+        const mixString = JSON.stringify(mixerList);
         axios.post(`/api/cocktails/${machine}`, {
             cocktails: jsonString
         })
@@ -179,6 +184,13 @@ class Drinks extends Component {
                 this.cancel();
                 this.setMessage('Cocktails added');
             })
+        axios.post(`/api/machine/${machine}`,{
+            alcohol: alcString,
+            mixer: mixerList,
+        })
+        .then((res) => {
+            console.log(res.data);
+        })
     }
 
 
